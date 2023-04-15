@@ -50,7 +50,7 @@ export const Navbar: React.FC = () => {
             h="100%"
           />
         </Box>
-        <Box
+        {/* <Box
           w="150px"
           h="80px"
           onClick={() => handleNavigation("/drop")}
@@ -68,7 +68,7 @@ export const Navbar: React.FC = () => {
             w="100%"
             h="100%"
           />
-        </Box>
+        </Box> */}
       </VStack>
     </Flex>
   );

@@ -45,8 +45,7 @@ const Collection = () => {
     return "#cca92c";
   };
 
-
-const getBorderColorByType = (type) => {
+  const getBorderColorByType = (type) => {
     switch (type) {
       case "Fire":
         return useColorModeValue("red.900", "red.400");
@@ -54,21 +53,10 @@ const getBorderColorByType = (type) => {
         return useColorModeValue("blue.500", "blue.400");
       case "Grass":
         return useColorModeValue("green.500", "green.400");
-      case "Electric":
-        return useColorModeValue("yellow.500", "yellow.400");
-      case "Ice":
-        return useColorModeValue("cyan.500", "cyan.400");
-      case "Poison":
-        return useColorModeValue("purple.500", "purple.400");
-      case "Ground":
-        return useColorModeValue("orange.500", "orange.400");
-      case "Flying":
-        return useColorModeValue("teal.500", "teal.400");
-      case "Psychic":
-        return useColorModeValue("pink.500", "pink.400");
       default:
         return "gray.500";
-    }};
+    }
+  };
 
   return (
     <Container height="100vh">
@@ -77,13 +65,20 @@ const getBorderColorByType = (type) => {
           <Navbar />
         </Flex>
         <Spacer />
-        <Flex direction="column" align="center" overflow={'scroll'}     sx={{
-      scrollbarWidth: 'none', // For Firefox
-      msOverflowStyle: 'none', // For Internet Explorer and Edge
-      '&::-webkit-scrollbar': {
-        display: 'none', // For Chrome, Safari, and Opera
-      },}}
-       h="100%" w="80%">
+        <Flex
+          direction="column"
+          align="center"
+          overflow={"scroll"}
+          sx={{
+            scrollbarWidth: "none", // For Firefox
+            msOverflowStyle: "none", // For Internet Explorer and Edge
+            "&::-webkit-scrollbar": {
+              display: "none", // For Chrome, Safari, and Opera
+            },
+          }}
+          h="100%"
+          w="80%"
+        >
           <Image
             w="700px"
             mt="-10px"
@@ -116,7 +111,9 @@ const getBorderColorByType = (type) => {
               <Flex mt="10px" boxShadow="0px 30px 30px rgba(0, 0, 0, 0.8)">
                 <Flex
                   borderWidth={20}
-                  borderColor={getBorderColorByType(monsterCurrentlyViewing.type)}
+                  borderColor={getBorderColorByType(
+                    monsterCurrentlyViewing.type
+                  )}
                   bg="rgba(0, 0, 0, 0.8)"
                 >
                   <Image
@@ -206,47 +203,50 @@ const getBorderColorByType = (type) => {
                       align="center"
                     >
                       {monsterCurrentlyViewing.moveList.map((move) => (
-                        <Text>{move}</Text>
+                        <Text>{move.name}</Text>
                       ))}
                     </Text>
                   </Flex>
                 </Flex>
               </Flex>
-              <Flex w='300px'>
-              <Box
-                mt="60px"
-                mb="-20px"
-                w="150px"
-                h="80px"
-                onClick={() => setMonsterCurrentlyViewing(null)}
-                cursor="pointer"
-                transition="all 0.2s"
-                _hover={{ width: "158px" }}
-                onDragStart={(event) => event.preventDefault()}
-              >
-                <Image
-                  src="https://d6hckkykh246u.cloudfront.net/Back.png"
-                  w="100%"
-                  h="100%"
-                />
-              </Box>
-                            <Box
-                mt="60px"
-                mb="-20px"
-                w="180px"
-                h="80px"
-                onClick={() => {setSelectedCreature(monsterCurrentlyViewing), handleNavigation("/")}}
-                cursor="pointer"
-                transition="all 0.2s"
-                _hover={{ width: "188px" }}
-                onDragStart={(event) => event.preventDefault()}
-              >
-                <Image
-                  src="https://d6hckkykh246u.cloudfront.net/Select.png"
-                  w="100%"
-                  h="100%"
-                />
-              </Box>
+              <Flex w="300px">
+                <Box
+                  mt="60px"
+                  mb="-20px"
+                  w="150px"
+                  h="80px"
+                  onClick={() => setMonsterCurrentlyViewing(null)}
+                  cursor="pointer"
+                  transition="all 0.2s"
+                  _hover={{ width: "158px" }}
+                  onDragStart={(event) => event.preventDefault()}
+                >
+                  <Image
+                    src="https://d6hckkykh246u.cloudfront.net/Back.png"
+                    w="100%"
+                    h="100%"
+                  />
+                </Box>
+                <Box
+                  mt="60px"
+                  mb="-20px"
+                  w="180px"
+                  h="80px"
+                  onClick={() => {
+                    setSelectedCreature(monsterCurrentlyViewing),
+                      handleNavigation("/");
+                  }}
+                  cursor="pointer"
+                  transition="all 0.2s"
+                  _hover={{ width: "188px" }}
+                  onDragStart={(event) => event.preventDefault()}
+                >
+                  <Image
+                    src="https://d6hckkykh246u.cloudfront.net/Select.png"
+                    w="100%"
+                    h="100%"
+                  />
+                </Box>
               </Flex>
             </Flex>
           )}

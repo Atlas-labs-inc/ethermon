@@ -1,41 +1,83 @@
 import React from "react";
-import { Box, Flex, Circle, Progress, Spacer, Text } from "@chakra-ui/react";
+import { Box, Flex, Text, Icon } from "@chakra-ui/react";
+import { FaHeart, FaBolt } from "react-icons/fa";
 
 export const HealthAndManaBar = ({ health, mana }) => {
   const maxHealth = 200;
   const maxMana = 10;
+  const healthChunkWidth = 1;
+  const manaChunkWidth = 40;
 
-  const manaCircles = new Array(maxMana)
+  const healthChunks = new Array(maxHealth / healthChunkWidth)
     .fill(0)
     .map((_, index) => (
-      <Circle
+      <Box
         key={index}
-        size="20px"
-        bg={index < mana ? "blue.500" : "gray.300"}
-        mx={1}
+        w={`100px`}
+        h="20px"
+        borderRadius="md"
+        mx={0}
+        bgGradient={
+          index * healthChunkWidth < health
+            ? "linear(to-r, red.500, red.800)"
+            : "gray.300"
+        }
+        transform="skewX(-20deg)"
+        _before={{
+          content: '""',
+          display: "block",
+          paddingTop: "20%",
+        }}
       />
     ));
 
+  const manaChunks = new Array(maxMana).fill(0).map((_, index) => (
+    <Box
+      key={index}
+      w={`${manaChunkWidth}px`}
+      h="20px"
+      borderRadius="4px"
+      mx={1}
+      bgGradient={
+        index < mana ? "linear(to-r, yellow.500, orange.500)" : "gray.300"
+      }
+      transform="skewX(-20deg)"
+      _before={{
+        content: '""',
+        display: "block",
+        paddingTop: "20%",
+      }}
+    />
+  ));
+
   return (
-    <Flex direction="column" alignItems="flex-start" width="400px">
-      <Text fontWeight="bold" mb={1}>
+    <Flex
+      bg="rgba(0,0,0,0.5)"
+      border={"4px"}
+      borderColor="#555"
+      direction="column"
+      borderRadius={"14px"}
+      align={"left"}
+      textAlign="left"
+      py="10px"
+      px="20px"
+      alignItems="center"
+      width="540px"
+      h="160px"
+    >
+      <Text fontWeight="bold" fontSize={"20px"} color="white" mb={1}>
         Health ({health}/{maxHealth}):
       </Text>
-      <Box w="100%" mb={4}>
-        <Progress
-          value={health}
-          max={maxHealth}
-          borderRadius="md"
-          colorScheme="red"
-          size="lg"
-        />
-      </Box>
-      <Text fontWeight="bold" mb={1}>
+      <Flex w="100%" mb={4} alignItems="center">
+        <Icon as={FaHeart} boxSize={6} color="red.500" mr={2} />
+        {healthChunks}
+      </Flex>
+      <Text fontWeight="bold" fontSize={"20px"} color="white" mb={1}>
         Mana ({mana}/{maxMana}):
       </Text>
-      <Flex>
-        {manaCircles}
-        <Spacer />
+      <Flex w="100%" alignItems="center">
+        <Icon as={FaBolt} boxSize={6} color="yellow.500" mr={2} />
+        {manaChunks}
       </Flex>
     </Flex>
   );

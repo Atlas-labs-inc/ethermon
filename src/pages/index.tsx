@@ -34,12 +34,12 @@ const Index = () => {
             <Box
               mt="10px"
               mb="-20px"
-              w="320px"
-              h="130px"
+              w="340px"
+              h="125px"
               onClick={() => handleNavigation("/collection")}
               cursor="pointer"
               transition="all 0.2s"
-              _hover={{ width: "328px" }}
+              _hover={{ width: "348px" }}
               onDragStart={(event) => event.preventDefault()}
             >
               <Image
@@ -52,12 +52,12 @@ const Index = () => {
             <Box
               mt="10px"
               mb="-20px"
-              w="320px"
-              h="130px"
+              w="350px"
+              h="125px"
               onClick={() => handleNavigation("/battle")}
               cursor="pointer"
               transition="all 0.2s"
-              _hover={{ width: "328px" }}
+              _hover={{ width: "358px" }}
               onDragStart={(event) => event.preventDefault()}
             >
               <Image

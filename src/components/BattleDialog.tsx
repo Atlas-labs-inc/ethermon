@@ -8,19 +8,22 @@ export const BattleDialog: React.FC = () => {
   const [isBattleOver, setIsBattleOver] = useState(false);
   const currentBattle = useStore((state) => state.currentBattle);
   const setCurrentBattle = useStore((state) => state.setCurrentBattle);
-  const [showChooseMove, setShowChooseMove] = useState(false);
+  const [choosingMove, setChoosingMove] = useState(false);
   const [battleMsg, setBattleMsg] = useState("The battle is about to begin...");
+  const [prevBattleMsg, setPrevBattleMsg] = useState("");
   const selectedCreature = useStore((state) => state.selectedCreature);
-
+  const [currentRound, setCurrentRound] = useState(0);
   const [socket, setSocket] = useState(null);
+  const [currentlyHovered, setCurrentlyHovered] = useState(null);
+  const [roundUpdated, setRoundUpdated] = useState(false);
+  const [receivedData, setReceivedData] = useState(null);
 
   useEffect(() => {
-    const ws = new WebSocket("ws://127.0.0.1:8000/play");
-    // const ws = new WebSocket(
-    //   "wss://ethermon-backend-production.up.railway.app/play"
-    // );
+    // const ws = new WebSocket("ws://127.0.0.1:8000/play");
+    const ws = new WebSocket(
+      "wss://ethermon-backend-production.up.railway.app/play"
+    );
 
-    let firstMsg = false;
     ws.onopen = () => {
       console.log("WebSocket connection opened");
       const accessToken = cookies.get("access_token");
@@ -37,21 +40,25 @@ export const BattleDialog: React.FC = () => {
     ws.onmessage = (event) => {
       const data = JSON.parse(event.data);
       console.log("WebSocket message received:", data);
-      console.log("WebSocket message mana:", data?.player?.mana);
+      setReceivedData(data);
+
       if (data?.state === 0) {
-        if (data?.player?.mana < 5) {
-          console.log("Skipping...");
-          ws.send(JSON.stringify({ move: "skip" }));
-        } else if (!firstMsg) {
-          firstMsg = true;
-          console.log("fball...");
-          ws.send(JSON.stringify({ move: "fireball" }));
-        } else {
-          console.log("headhutt...");
-          ws.send(JSON.stringify({ move: "headbutt" }));
+        setRoundUpdated(true);
+        if (data.state_transitions.length === 0) {
+          console.log("no state transitions, running first time setup");
+          setTimeout(() => {
+            setBattleMsg("Select your attack!");
+            setChoosingMove(true);
+            setCurrentRound((prevRound) => prevRound + 1);
+          }, 1000);
         }
       } else if (data?.state === 2) {
-        console.log("Battle over!");
+        if (data.winner === "npc") {
+          setBattleMsg("You Lost!");
+        } else {
+          setBattleMsg("You Won!");
+        }
+        setIsBattleOver(true);
         ws.close();
       }
     };
@@ -74,24 +81,34 @@ export const BattleDialog: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    setTimeout(() => {
-      setBattleMsg("Choose your attack!");
-    }, 2000);
-  }, []);
+    const processRound = async () => {
+      if (roundUpdated && receivedData.state_transitions.length >= 2) {
+        console.log("received data", receivedData.state_transitions);
+        console.log("current round", currentRound);
+        const isPlayerFirst =
+          receivedData.state_transitions[currentRound - 1].player === "player";
+        const playerMove = isPlayerFirst
+          ? receivedData.state_transitions[currentRound - 1].move
+          : receivedData.state_transitions[currentRound].move;
+        const monsterMove = isPlayerFirst
+          ? receivedData.state_transitions[currentRound].move
+          : receivedData.state_transitions[currentRound - 1].move;
+        await turnScript(playerMove, monsterMove, isPlayerFirst);
+        setChoosingMove(true);
+        setBattleMsg("Select your attack!");
+        setCurrentRound((prevRound) => prevRound + 1);
+      }
+      setRoundUpdated(false);
+    };
 
-  useEffect(() => {
-    if (battleMsg === "Choose your attack!") {
-      setTimeout(() => {
-        setShowChooseMove(true);
-      }, 2000);
-    }
-  }, [battleMsg]);
+    processRound();
+  }, [roundUpdated]);
 
   const getMoveEffect = (move: string) => {
     return "It's super effective!";
   };
 
-  const turnScript = (
+  const turnScript = async (
     playerMove: string,
     monsterMove: string,
     isPlayerFirst: boolean
@@ -116,21 +133,40 @@ export const BattleDialog: React.FC = () => {
     if (secondMoveEffect) {
       script.push(secondMoveEffect);
     }
-    return script;
+    const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
+    const processScript = async () => {
+      for (const message of script) {
+        // console.log("setting");
+        setBattleMsg(message);
+        await delay(2000);
+      }
+    };
+
+    return new Promise(async (resolve) => {
+      await processScript();
+      resolve(script);
+    });
+  };
+
+  const selectMove = (move: string) => {
+    console.log(move);
+    socket.send(JSON.stringify({ move }));
   };
 
   return (
     <Flex
-      borderRadius="10px"
-      py="10px"
-      px="10px"
+      borderRadius="24px"
+      bg="rgba(0,0,0,0.4)"
+      border="4px"
+      borderColor={"#555"}
+      p="12px"
       align={"center"}
       justify={"center"}
     >
-
       <Grid templateColumns="repeat(2, 1fr)">
         <Flex
-          w="440px"
+          w="540px"
           h="200px"
           cursor="pointer"
           transition="all 0.2s"
@@ -142,27 +178,30 @@ export const BattleDialog: React.FC = () => {
           m={0}
           p={0}
         >
-                <Typist
-        avgTypingDelay={20}
-        align="center"
-        position="absolute"
-        zIndex="1"
-        key={battleMsg}
-      >
-        <Text
-                        right='60px'
-      left='130px'
-          position="absolute"
-          color="white"
-          fontSize="24px"
-          fontWeight="bold"
-          zIndex={1}
-        >
-          {battleMsg}
-        </Text>
-      </Typist>
+          <Typist
+            avgTypingDelay={20}
+            ml="200px"
+            align="center"
+            position="absolute"
+            zIndex="1"
+            key={battleMsg}
+          >
+            <Text
+              top="25px"
+              left="37px"
+              fontStyle={"italic"}
+              position="absolute"
+              color="white"
+              fontSize="28px"
+              fontWeight="bold"
+              zIndex={1}
+            >
+              {battleMsg}
+            </Text>
+          </Typist>
           <Image
-            src="https://d6hckkykh246u.cloudfront.net/chat.png"
+            src="https://d6hckkykh246u.cloudfront.net/Black.png"
+            opacity={0.7}
             w="100%"
             h="100%"
             position="absolute"
@@ -171,43 +210,78 @@ export const BattleDialog: React.FC = () => {
           />
         </Flex>
         <Grid
-          templateColumns="repeat(2, 1fr)"
-          templateRows="repeat(2, 1fr)"
+          templateColumns="repeat(2, 0fr)"
+          templateRows="repeat(2, 0fr)"
           gap={0}
         >
-          {selectedCreature.moveList.map((move) => (
-            <Flex
-              w="220px"
-              h="100px"
-              cursor="pointer"
-              transition="all 0.2s"
-              onDragStart={(event) => event.preventDefault()}
-              alignItems="center"
-              justifyContent="center"
-              position="relative"
-              overflow="hidden"
-              m={0}
-              p={0}
-            >
-              <Text
-                mb="18px"
-                color="white"
-                fontSize="24px"
-                fontWeight="bold"
-                zIndex={1}
+          {selectedCreature.moveList.map((move) => {
+            const [isHovered, setIsHovered] = useState(false);
+
+            return (
+              <Flex
+                key={move.name}
+                w="270px"
+                h="100px"
+                cursor="pointer"
+                transition="all 0.2s"
+                onDragStart={(event) => event.preventDefault()}
+                onClick={() => {
+                  if (choosingMove) {
+                    selectMove(move.name);
+                    setChoosingMove(false);
+                  }
+                }}
+                onMouseEnter={() => {
+                  if (choosingMove) {
+                    setIsHovered(true);
+                    setPrevBattleMsg(battleMsg);
+                    setBattleMsg(move.name);
+                  }
+                }}
+                onMouseLeave={() => {
+                  if (choosingMove) {
+                    setIsHovered(false);
+                    setBattleMsg(prevBattleMsg);
+                  }
+                }}
+                alignItems="center"
+                justifyContent="center"
+                position="relative"
+                overflow="hidden"
+                m={0}
+                p={0}
               >
-                {move}
-              </Text>
-              <Image
-                src="https://d6hckkykh246u.cloudfront.net/GreenBlank.png"
-                w="100%"
-                h="100%"
-                position="absolute"
-                top={0}
-                left={0}
-              />
-            </Flex>
-          ))}
+                <Text
+                  mb="15px"
+                  color="#eee"
+                  fontSize="28px"
+                  fontWeight="800"
+                  userSelect={"none"}
+                  zIndex={1}
+                >
+                  {move.name}
+                </Text>
+                <Image
+                  opacity={choosingMove ? 1 : 0.5}
+                  src={"https://d6hckkykh246u.cloudfront.net/GreenButton.png"}
+                  w="100%"
+                  h="100%"
+                  position="absolute"
+                  top={0}
+                  left={0}
+                />
+                <Image
+                  src={"https://d6hckkykh246u.cloudfront.net/Gold.png"}
+                  opacity={isHovered ? 100 : 0}
+                  w="100%"
+                  h="100%"
+                  position="absolute"
+                  top={0}
+                  left={0}
+                />
+              </Flex>
+            );
+          })}
         </Grid>
       </Grid>
     </Flex>

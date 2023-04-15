@@ -18,6 +18,7 @@
     "next-images": "^1.8.4",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-icons": "^4.8.0",
     "react-svg": "^16.1.7",
     "react-typist": "^2.0.5",
     "siwe": "^1.1.6",
