@@ -1,6 +1,5 @@
 import React from "react";
 import useStore from "../store";
-import { SillyLittleButton } from "./SillyLittleButton";
 import { Flex, Text } from "@chakra-ui/react";
 
 export const Treasury: React.FC = () => {

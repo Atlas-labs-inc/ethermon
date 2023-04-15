@@ -8,6 +8,9 @@ interface CreatureProps {
   id?: number;
   contractAddress?: string;
   abi?: any;
+  width?: number;
+  height?: number;
+  flipX?: boolean;
 }
 
 const GrizzlarkSvg = dynamic(() => import("../components/Grizzlark"), {
@@ -18,6 +21,9 @@ export const Creature: React.FC<CreatureProps> = ({
   id,
   contractAddress,
   abi,
+  width,
+  height,
+  flipX,
 }) => {
   const [svg, setSvg] = useState<string>("");
 
@@ -43,5 +49,11 @@ export const Creature: React.FC<CreatureProps> = ({
   // return (
   //   <ReactSVG wrapper="div" src={`data:image/svg+xml,${encodeURIComponent(svg)}`} />
   // );
-  return <GrizzlarkSvg />;
+  return (
+    <GrizzlarkSvg
+      width={width ? width : 467}
+      height={height ? height : 600}
+      className={flipX ? "flip-x-axis" : ""}
+    />
+  );
 };
