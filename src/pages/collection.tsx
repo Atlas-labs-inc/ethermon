@@ -80,12 +80,11 @@ const Collection = () => {
             </Grid>
           ) : (
             <Flex direction="column" align={"center"} mt="10px">
-              <Flex mt="10px">
+              <Flex mt="10px" boxShadow="0px 30px 30px rgba(0, 0, 0, 1)">
                 <Flex
                   borderWidth={20}
                   borderColor={getAverageColor(monsterCurrentlyViewing.image)}
                   bg="#eee"
-                  boxShadow="0px 30px 30px rgba(0, 0, 0, 1)"
                 >
                   <Image
                     src={monsterCurrentlyViewing.image}
@@ -95,26 +94,83 @@ const Collection = () => {
                     transition={"all 0.2s ease-in-out"}
                   />
                 </Flex>
-                <Flex direction="column"  w="400px">
-                  <Flex w='100%' justify={'center'}>
-                  <Box
-                w="120px"
-                h="40px"
-                onClick={() => setMonsterCurrentlyViewing(null)}
-                cursor="pointer"
-                transition="all 0.2s"
-                _hover={{ width: "160px" }}
-                onDragStart={(event) => event.preventDefault()}
-              >
-                <Image
-                  src="https://i.ibb.co/0VsjwVp/NAME.png"
-                  w="100%"
-                  h="100%"
-                />
-              </Box>
-                  <Text textColor={"white"} fontSize={"20px"} align="center">
-                    {monsterCurrentlyViewing.name}
-                  </Text>
+                <Flex direction="column" justify='center' bg="rgba(0, 0, 0, 0.5)" w="400px">
+                  <Flex
+                    w="100%"
+                    align={"center"}
+                    direction="column"
+                    justify={"center"}
+                  >
+                    <Box
+                      w="120px"
+                      h="40px"
+                      cursor="pointer"
+                      transition="all 0.2s"
+                      _hover={{ width: "160px" }}
+                      onDragStart={(event) => event.preventDefault()}
+                    >
+                      <Image
+                        src="https://i.ibb.co/0VsjwVp/NAME.png"
+                        w="100%"
+                        h="100%"
+                      />
+                    </Box>
+                    <Text
+                      textColor={"white"}
+                      fontWeight="bold"
+                      fontSize={"30px"}
+                      align="center"
+                    >
+                      {monsterCurrentlyViewing.name}
+                    </Text>
+                                        <Box
+                                        mt='10px'
+                      w="120px"
+                      h="40px"
+                      cursor="pointer"
+                      transition="all 0.2s"
+                      _hover={{ width: "160px" }}
+                      onDragStart={(event) => event.preventDefault()}
+                    >
+                      <Image
+                        src="https://i.ibb.co/kQmg9zd/TYPER.png"
+                        w="100%"
+                        h="100%"
+                      />
+                    </Box>
+                    <Text
+                      textColor={"white"}
+                      fontWeight="bold"
+                      fontSize={"30px"}
+                      align="center"
+                    >
+                      {monsterCurrentlyViewing.type}
+                    </Text>
+                                        <Box
+                                         mt='10px'
+                      w="180px"
+                      h="40px"
+                      cursor="pointer"
+                      transition="all 0.2s"
+                      _hover={{ width: "160px" }}
+                      onDragStart={(event) => event.preventDefault()}
+                    >
+                      <Image
+                        src="https://i.ibb.co/tp6Q0D7/ABILITIES.png"
+                        w="100%"
+                        h="100%"
+                      />
+                    </Box>
+                    <Text
+                      textColor={"white"}
+                      fontWeight="bold"
+                      fontSize={"30px"}
+                      align="center"
+                    >
+                      {monsterCurrentlyViewing.moveList.map((move) => (
+                        <Text>{move}</Text>
+                      ))}
+                    </Text>
                   </Flex>
                 </Flex>
               </Flex>
