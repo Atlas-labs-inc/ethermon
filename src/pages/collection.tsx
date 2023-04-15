@@ -15,13 +15,14 @@ import { Navbar } from "../components/Navbar";
 import { ConnectWallet } from "../components/ConnectWallet";
 import { Treasury } from "../components/Treasury";
 import { Creature } from "../components/Creature";
-import { BattleButton } from "../components/BattleButton";
 import useStore from "../store";
 import { useEffect } from "react";
 import { useRouter } from "next/router";
 import { loadImage, createCanvas } from 'canvas';
 
 const Collection = () => {
+  const setSelectedCreature = useStore((state) => state.setSelectedCreature);
+
   useEffect(() => {
     setMonsterCurrentlyViewing(null);
   }, []);
@@ -77,12 +78,18 @@ const getBorderColorByType = (type) => {
           <Navbar />
         </Flex>
         <Spacer />
-        <Flex direction="column" align="center" h="100%" w="80%">
+        <Flex direction="column" align="center" overflow={'scroll'}     sx={{
+      scrollbarWidth: 'none', // For Firefox
+      msOverflowStyle: 'none', // For Internet Explorer and Edge
+      '&::-webkit-scrollbar': {
+        display: 'none', // For Chrome, Safari, and Opera
+      },}}
+       h="100%" w="80%">
           <Image
             w="700px"
             mt="-10px"
             objectFit="contain"
-            src="https://i.ibb.co/3Yt2K1h/MY-COLLECTION.png"
+            src="https://d6hckkykh246u.cloudfront.net/COLLECTION.png"
           />
           {!monsterCurrentlyViewing ? (
             <Grid mt="15px" templateColumns="repeat(3, 1fr)" gap={4}>
@@ -138,11 +145,11 @@ const getBorderColorByType = (type) => {
                       h="40px"
                       cursor="pointer"
                       transition="all 0.2s"
-                      _hover={{ width: "160px" }}
+                      _hover={{ width: "130px" }}
                       onDragStart={(event) => event.preventDefault()}
                     >
                       <Image
-                        src="https://i.ibb.co/0VsjwVp/NAME.png"
+                        src="https://d6hckkykh246u.cloudfront.net/NAME.png"
                         w="100%"
                         h="100%"
                       />
@@ -161,11 +168,11 @@ const getBorderColorByType = (type) => {
                       h="40px"
                       cursor="pointer"
                       transition="all 0.2s"
-                      _hover={{ width: "160px" }}
+                      _hover={{ width: "130px" }}
                       onDragStart={(event) => event.preventDefault()}
                     >
                       <Image
-                        src="https://i.ibb.co/kQmg9zd/TYPER.png"
+                        src="https://d6hckkykh246u.cloudfront.net/TYPER.png"
                         w="100%"
                         h="100%"
                       />
@@ -184,11 +191,11 @@ const getBorderColorByType = (type) => {
                       h="40px"
                       cursor="pointer"
                       transition="all 0.2s"
-                      _hover={{ width: "160px" }}
+                      _hover={{ width: "190px" }}
                       onDragStart={(event) => event.preventDefault()}
                     >
                       <Image
-                        src="https://i.ibb.co/tp6Q0D7/ABILITIES.png"
+                        src="https://d6hckkykh246u.cloudfront.net/ABILITIES.png"
                         w="100%"
                         h="100%"
                       />
@@ -206,6 +213,7 @@ const getBorderColorByType = (type) => {
                   </Flex>
                 </Flex>
               </Flex>
+              <Flex w='300px'>
               <Box
                 mt="60px"
                 mb="-20px"
@@ -214,15 +222,33 @@ const getBorderColorByType = (type) => {
                 onClick={() => setMonsterCurrentlyViewing(null)}
                 cursor="pointer"
                 transition="all 0.2s"
-                _hover={{ width: "160px" }}
+                _hover={{ width: "158px" }}
                 onDragStart={(event) => event.preventDefault()}
               >
                 <Image
-                  src="https://i.ibb.co/r4wdk64/Back.png"
+                  src="https://d6hckkykh246u.cloudfront.net/Back.png"
                   w="100%"
                   h="100%"
                 />
               </Box>
+                            <Box
+                mt="60px"
+                mb="-20px"
+                w="180px"
+                h="80px"
+                onClick={() => {setMonsterCurrentlyViewing(null), setSelectedCreature(monsterCurrentlyViewing), handleNavigation("/")}}
+                cursor="pointer"
+                transition="all 0.2s"
+                _hover={{ width: "188px" }}
+                onDragStart={(event) => event.preventDefault()}
+              >
+                <Image
+                  src="https://d6hckkykh246u.cloudfront.net/Select.png"
+                  w="100%"
+                  h="100%"
+                />
+              </Box>
+              </Flex>
             </Flex>
           )}
         </Flex>

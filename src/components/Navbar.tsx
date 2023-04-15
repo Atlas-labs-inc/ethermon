@@ -18,14 +18,14 @@ export const Navbar: React.FC = () => {
           onClick={() => handleNavigation("/")}
           cursor="pointer"
           transition="all 0.2s"
-          _hover={{ width: "170px" }}
+          _hover={{ width: "168px" }}
           onDragStart={(event) => event.preventDefault()}
         >
           <Image
             src={
               router.pathname === "/"
-                ? "https://i.ibb.co/HYgWhkR/home.png"
-                : "https://i.ibb.co/5K9TTx8/home-green.png"
+                ? "https://d6hckkykh246u.cloudfront.net/home.png"
+                : "https://d6hckkykh246u.cloudfront.net/home_green.png"
             }
             w="100%"
             h="100%"
@@ -37,14 +37,14 @@ export const Navbar: React.FC = () => {
           onClick={() => handleNavigation("/collection")}
           cursor="pointer"
           transition="all 0.2s"
-          _hover={{ width: "290px" }}
+          _hover={{ width: "288px" }}
           onDragStart={(event) => event.preventDefault()}
         >
           <Image
             src={
               router.pathname === "/collection"
-                ? "https://i.ibb.co/42sF6Hw/collection.png"
-                : "https://i.ibb.co/cy7btsK/collection-green.png"
+                ? "https://d6hckkykh246u.cloudfront.net/collection.png"
+                : "https://d6hckkykh246u.cloudfront.net/collection_green.png"
             }
             w="100%"
             h="100%"
@@ -56,14 +56,14 @@ export const Navbar: React.FC = () => {
           onClick={() => handleNavigation("/drop")}
           cursor="pointer"
           transition="all 0.2s"
-          _hover={{ width: "160px" }}
+          _hover={{ width: "158px" }}
           onDragStart={(event) => event.preventDefault()}
         >
           <Image
             src={
               router.pathname === "/drop"
-                ? "https://i.ibb.co/xX2nN80/shop.png"
-                : "https://i.ibb.co/56DqXD3/shop-green.png"
+                ? "https://d6hckkykh246u.cloudfront.net/shop.png"
+                : "https://d6hckkykh246u.cloudfront.net/shop_green.png"
             }
             w="100%"
             h="100%"

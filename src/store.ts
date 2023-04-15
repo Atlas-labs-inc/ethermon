@@ -20,12 +20,12 @@ type Store = {
 };
 
 const useStore = create<Store>((set) => ({
-  selectedCreature: {
-    id: 0,
-    name: "",
-    type: "",
-    moveList: [],
-    image: "",
+  selectedCreature:     {
+      id: 1,
+      name: "Grizzlark",
+      type: "Fire",
+      moveList: ["Scratch", "Ember", "Fire Fang", "Flamethrower"],
+      image: "https://svgshare.com/i/s9F.svg",
   },
   setSelectedCreature: (creature) => set({ selectedCreature: creature }),
   walletAddress: "",
@@ -55,6 +55,34 @@ const useStore = create<Store>((set) => ({
       image: "https://svgshare.com/i/s9v.svg",
     },
     {
+      id: 4,
+      name: "Pikachu",
+      type: "Electric",
+      moveList: ["Thunder Shock", "Thunderbolt", "Thunder", "Thunder Punch"],
+      image: "https://svgshare.com/i/s8s.svg",
+    },
+    {
+      id: 5,
+      name: "Eevee",
+      type: "Ground",
+      moveList: ["Tackle", "Quick Attack", "Bite", "Body Slam"],
+      image: "https://svgshare.com/i/s8t.svg",
+    },
+    {
+      id: 6,
+      name: "Snorlax",
+      type: "Water",
+      moveList: ["Tackle", "Body Slam", "Hyper Beam", "Earthquake"],
+      image: "https://svgshare.com/i/s9b.svg",
+    },
+    {
+      id: 7,
+      name: "Chromeleon",
+      type: "Grass",
+      moveList: ["Pound", "Psybeam", "Psychic", "Shadow Ball"],
+      image: "https://svgshare.com/i/s9G.svg",
+    },
+        {
       id: 4,
       name: "Pikachu",
       type: "Electric",

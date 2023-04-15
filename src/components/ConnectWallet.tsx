@@ -163,11 +163,11 @@ export const ConnectWallet = () => {
           onClick={() => setShowModal(true)}
           cursor="pointer"
           transition="all 0.2s"
-          _hover={{ width: "290px" }}
+          _hover={{ width: "288px" }}
           onDragStart={(event) => event.preventDefault()}
         >
           <Image
-            src="https://i.ibb.co/g9LsHBH/Connected.png"
+            src="https://d6hckkykh246u.cloudfront.net/Connected.png"
             w="100%"
             h="100%"
           />
@@ -234,15 +234,15 @@ export const ConnectWallet = () => {
         <Box
           mt="10px"
           mb="-20px"
-          w="280px"
+          w="300px"
           h="80px"
           onClick={attemptConnect}
           cursor="pointer"
           transition="all 0.2s"
-          _hover={{ width: "290px" }}
+          _hover={{ width: "308px" }}
           onDragStart={(event) => event.preventDefault()}
         >
-          <Image src="https://i.ibb.co/C081Q3N/Connect.png" w="100%" h="100%" />
+          <Image src="https://d6hckkykh246u.cloudfront.net/Connect.png" w="100%" h="100%" />
         </Box>
       </Flex>
     );

@@ -58,9 +58,9 @@ export const BattleDialog: React.FC = () => {
 
   return (
     <Flex
-      bg="#fff"
-      w="80%"
-      border={"4px blue solid"}
+      bg="rgba(0,0,0,0.5)"
+      w="70%"
+      // border={"4px blue solid"}
       borderRadius="10px"
       py="16px"
       px="16px"

@@ -1,6 +1,12 @@
 import { Flex, FlexProps } from "@chakra-ui/react";
+import useStore from "../store";
 
-export const Container = (props: FlexProps) => (
+export const Container = (props: FlexProps) => {
+
+  const currentBattle = useStore((state) => state.currentBattle);
+  const bgImage = currentBattle ? "https://d6hckkykh246u.cloudfront.net/battle.png" : "https://d6hckkykh246u.cloudfront.net/background.png";
+
+  return (
   <Flex
     direction="column"
     alignItems="center"
@@ -16,4 +22,7 @@ export const Container = (props: FlexProps) => (
     transition="all 0.15s ease-out"
     {...props}
   />
-);
+  );
+
+
+};

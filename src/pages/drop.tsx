@@ -1,11 +1,10 @@
-import { Flex, Spacer } from "@chakra-ui/react";
+import { Flex, Spacer, Image, Text, Box } from "@chakra-ui/react";
 import { CheckCircleIcon, LinkIcon } from "@chakra-ui/icons";
 import { Container } from "../components/Container";
 import { Navbar } from "../components/Navbar";
 import { ConnectWallet } from "../components/ConnectWallet";
 import { Treasury } from "../components/Treasury";
 import { Creature } from "../components/Creature";
-import { BattleButton } from "../components/BattleButton";
 
 const Drop = () => (
   <Container height="100vh">
@@ -15,11 +14,26 @@ const Drop = () => (
       </Flex>
       <Spacer />
       <Flex direction="column" align="center" h="100%" w="80%">
-        <Treasury />
-        <Spacer />
+          <Image
+            w="700px"
+            mt="-10px"
+            objectFit="contain"
+            src="https://d6hckkykh246u.cloudfront.net/DAILY.png"
+          />        <Spacer />
         <Creature />
-        <BattleButton />
-      </Flex>
+    <Box
+      mt="10px"
+      mb="-20px"
+      w="340px"
+      h="140px"
+      // onClick={() => handleNavigation("/battle")}
+      cursor="pointer"
+      transition="all 0.2s"
+      _hover={{ width: "348px" }}
+      onDragStart={(event) => event.preventDefault()}
+    >
+      <Image src="https://d6hckkykh246u.cloudfront.net/BattleButton.png" w="100%" h="100%" />
+    </Box>      </Flex>
       <Flex w="280px" align="flex-start" justify={"flex-start"}>
         <ConnectWallet />
       </Flex>
