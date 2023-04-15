@@ -36,11 +36,22 @@ export const BattleDialog: React.FC = () => {
     ws.onmessage = (event) => {
       const data = JSON.parse(event.data);
       console.log("WebSocket message received:", data);
-      if (!firstMsg) {
-        firstMsg = true;
-        ws.send(JSON.stringify({ move: "fireball" }));
-      } else {
-        ws.send(JSON.stringify({ move: "headbutt" }));
+      console.log("WebSocket message mana:", data?.player?.mana);
+      if (data?.state === 0) {
+        if (data?.player?.mana < 5) {
+          console.log("Skipping...");
+          ws.send(JSON.stringify({ move: "skip" }));
+        } else if (!firstMsg) {
+          firstMsg = true;
+          console.log("fball...");
+          ws.send(JSON.stringify({ move: "fireball" }));
+        } else {
+          console.log("headhutt...");
+          ws.send(JSON.stringify({ move: "headbutt" }));
+        }
+      } else if (data?.state === 2) {
+        console.log("Battle over!");
+        ws.close();
       }
     };
 
