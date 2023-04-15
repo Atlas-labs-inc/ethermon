@@ -26,6 +26,7 @@ const Battle = () => {
   const setIsBattleOver = useStore((state) => state.setIsBattleOver);
   const didUserWin = useStore((state) => state.didUserWin);
   const currentBattle = useStore((state) => state.currentBattle);
+  const selectedCreature = useStore((state) => state.selectedCreature);
   const setCurrentBattle = useStore((state) => state.setCurrentBattle);
   const [isPlayerAttacking, setIsPlayerAttacking] = useState(false);
   const [battleMsg, setBattleMsg] = useState("The battle is about to begin!");
@@ -109,7 +110,11 @@ const Battle = () => {
               mana={currentBattle.player.mana}
             />
             <Flex mt="0px">
-              <Creature width={350} height={550} />
+              <Creature
+                width={350}
+                height={550}
+                imageURL={selectedCreature.image}
+              />
             </Flex>
           </Flex>
           <Spacer />

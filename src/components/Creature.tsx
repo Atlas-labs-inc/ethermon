@@ -31,41 +31,5 @@ export const Creature: React.FC<CreatureProps> = ({
 }) => {
   // const [svg, setSvg] = useState<string>("");
   console.log("flipX:", flipX);
-  // useEffect(() => {
-  //   const fetchSVG = async () => {
-  //     if (!contractAddress || !abi) {
-  //       return;
-  //     }
-
-  //     try {
-  //       const provider = new ethers.providers.Web3Provider(window.ethereum);
-  //       const contract = new ethers.Contract(contractAddress, abi, provider);
-  //       const svgData = await contract.getSVG(id);
-  //       setSvg(svgData);
-  //     } catch (error) {
-  //       console.error('Error fetching SVG:', error);
-  //     }
-  //   };
-
-  //   fetchSVG();
-  // }, [id, contractAddress, abi]);
-
-  return (
-    // <ReactSVG
-    //   wrapper="div"
-    //   src={imageURL}
-    //   style={{
-    //     width: width ? width : 467,
-    //     height: height ? height : 600,
-    //   }}
-    // />
-    <div dangerouslySetInnerHTML={{ __html: imageURL }} />
-  );
-  // return (
-  //   <GrizzlarkSvg
-  //     width={width ? width : 467}
-  //     height={height ? height : 600}
-  //     className={flipX ? styles.flip : ""}
-  //   />
-  // );
+  return <div dangerouslySetInnerHTML={{ __html: imageURL }} />;
 };

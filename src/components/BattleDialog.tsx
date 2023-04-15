@@ -47,7 +47,7 @@ export const BattleDialog: React.FC = () => {
     ws.onopen = () => {
       console.log("WebSocket connection opened");
       const accessToken = cookies.get("access_token");
-      const tokenId = "y69lmao";
+      const tokenId = selectedCreature.id;
 
       const message = {
         access_token: accessToken,

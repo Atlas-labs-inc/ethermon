@@ -37,8 +37,6 @@ const Collection = () => {
   const setMonsterCurrentlyViewing = useStore(
     (state) => state.setMonsterCurrentlyViewing
   );
-
-  // You should get the average color using a library or a custom function
   // Here's a placeholder function
   const getAverageColor = (imageSrc) => {
     // Implement your logic to get the average color of an image
@@ -102,7 +100,13 @@ const Collection = () => {
                   borderColor={getBorderColorByType(item.type)}
                   boxShadow="0px 0px 30px rgba(0, 0, 0, 1)"
                 >
-                  <Image src={item.image} objectFit="contain" boxSize="240px" />
+                  <Box
+                    overflow="hidden" // To contain overflowing content
+                    display="flex" // To center the SVG content
+                    alignItems="center" // To center the SVG content vertically
+                    justifyContent="center" // To center the SVG content horizontally
+                    dangerouslySetInnerHTML={{ __html: item.image }}
+                  />
                 </GridItem>
               ))}
             </Grid>
