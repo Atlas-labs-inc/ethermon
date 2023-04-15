@@ -20,6 +20,8 @@
     "react-dom": "^18.2.0",
     "react-svg": "^16.1.7",
     "react-typist": "^2.0.5",
+    "siwe": "^1.1.6",
+    "universal-cookie": "^4.0.4",
     "zustand": "^4.3.7"
   },
   "devDependencies": {

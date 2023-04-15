@@ -26,6 +26,8 @@ import { ChevronDownIcon } from "@chakra-ui/icons";
 import colors from "../util/colors";
 import { NetworkMap } from "../util/networkMap";
 import { useToast } from "@chakra-ui/react";
+import { SiweMessage } from "siwe";
+import cookies from "../util/cookies";
 
 export const ConnectWallet = () => {
   const [connected, setConnected] = useState(false);
@@ -56,9 +58,53 @@ export const ConnectWallet = () => {
 
   useEffect(() => {
     if (metamaskProvider && (window.ethereum as any).selectedAddress) {
-      connectAccount((window.ethereum as any).selectedAddress);
+      // connectAccount((window.ethereum as any).selectedAddress);
     }
   }, [metamaskProvider]);
+
+  const createSiweMessage = (address, nonce) => {
+    const domain = window.location.host;
+    const origin = window.location.origin;
+    const message = new SiweMessage({
+      domain,
+      address,
+      statement: "Sign in to EthMonsters!",
+      uri: origin,
+      version: "1",
+      chainId: 1,
+      nonce,
+    });
+    return message.prepareMessage();
+  };
+
+  const signInWithEthereum = async () => {
+    const signer = metamaskProvider.getSigner();
+    const address = await signer.getAddress();
+    const response = await fetch(
+      "https://ethermon-backend-production.up.railway.app/sign-in?address=" +
+        address
+    );
+    const message = createSiweMessage(
+      address,
+      JSON.parse(await response.text()).nonce
+    );
+    const signature = await signer.signMessage(message);
+    console.log("sign in with ethereum signature", signature);
+    const res = await fetch(
+      `https://ethermon-backend-production.up.railway.app/sign-in`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ message, signature, address }),
+      }
+    );
+    // Prove this works
+    const cookie = JSON.parse(await res.text());
+    console.log("cookie shit", cookie);
+    cookies.set("access_token", "Bearer " + cookie.access_token, { path: "/" });
+  };
 
   const attemptConnect = async () => {
     if (!metamaskInstalled) {
@@ -70,6 +116,7 @@ export const ConnectWallet = () => {
     try {
       const accounts = await metamaskProvider.send("eth_requestAccounts", []);
       await connectAccount(accounts[0]);
+      await signInWithEthereum();
     } catch (error) {
       console.log("Failed to connect:", error);
     }
