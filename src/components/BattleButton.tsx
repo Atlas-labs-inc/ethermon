@@ -14,10 +14,11 @@ export const BattleButton: React.FC = () => {
       mt="10px"
       mb="-20px"
       w="308px"
-      h="130px"
+      h="140px"
       onClick={() => handleNavigation("/battle")}
       cursor="pointer"
-      _hover={{ width: "330px", transition: "all 0.3s" }}
+      transition="all 0.2s"
+      _hover={{ width: "320px" }}
       onDragStart={(event) => event.preventDefault()}
     >
       <Image src="https://i.ibb.co/LvWqz8h/Button.png" w="100%" h="100%" />

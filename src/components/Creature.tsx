@@ -3,6 +3,7 @@ import { ethers } from "ethers";
 import { ReactSVG } from "react-svg";
 // import { ReactComponent as GrizzlarkSvg } from "../util/grizzlark.svg";
 import dynamic from "next/dynamic";
+import styles from "./Creature.module.css";
 
 interface CreatureProps {
   id?: number;
@@ -26,7 +27,7 @@ export const Creature: React.FC<CreatureProps> = ({
   flipX,
 }) => {
   const [svg, setSvg] = useState<string>("");
-
+  console.log("flipX:", flipX);
   // useEffect(() => {
   //   const fetchSVG = async () => {
   //     if (!contractAddress || !abi) {
@@ -53,7 +54,7 @@ export const Creature: React.FC<CreatureProps> = ({
     <GrizzlarkSvg
       width={width ? width : 467}
       height={height ? height : 600}
-      className={flipX ? "flip-x-axis" : ""}
+      className={flipX ? styles.flip : ""}
     />
   );
 };

@@ -154,7 +154,7 @@ export const ConnectWallet = () => {
 
   if (connected) {
     return (
-      <Flex align="center" mr="1.5rem">
+      <Flex align="center">
         <Box
           mt="10px"
           mb="-20px"
@@ -162,7 +162,8 @@ export const ConnectWallet = () => {
           h="80px"
           onClick={() => setShowModal(true)}
           cursor="pointer"
-          _hover={{ width: "290px", transition: "all 0.3s" }}
+          transition="all 0.2s"
+          _hover={{ width: "290px" }}
           onDragStart={(event) => event.preventDefault()}
         >
           <Image
@@ -171,17 +172,16 @@ export const ConnectWallet = () => {
             h="100%"
           />
           <Text
-            position="absolute"
-            top="5.2vh"
-            right="5.4vw"
+            position="relative"
+            top="-6.75vh"
             align={"center"}
             textAlign="center"
             fontFamily={"Inter"}
             fontStyle="italic"
-            fontSize="28px"
+            fontSize="26px"
             color="white"
             fontWeight={"900"}
-            textShadow="2px 2px 4px rgba(0, 0, 0, 0.5)" // Add this line for drop shadow
+            textShadow="2px 2px 4px rgba(0, 0, 0, 0.4)" // Add this line for drop shadow
           >
             {formatHash(account)}
           </Text>
@@ -238,7 +238,8 @@ export const ConnectWallet = () => {
           h="80px"
           onClick={attemptConnect}
           cursor="pointer"
-          _hover={{ width: "290px", transition: "all 0.3s" }}
+          transition="all 0.2s"
+          _hover={{ width: "290px" }}
           onDragStart={(event) => event.preventDefault()}
         >
           <Image src="https://i.ibb.co/C081Q3N/Connect.png" w="100%" h="100%" />

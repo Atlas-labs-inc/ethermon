@@ -10,7 +10,7 @@ import { BattleButton } from "../components/BattleButton";
 const Index = () => (
   <Container height="100vh">
     <Flex h="100%" p="2rem" w="100%">
-      <Flex position="absolute">
+      <Flex w="280px">
         <Navbar />
       </Flex>
       <Spacer />
@@ -20,7 +20,7 @@ const Index = () => (
         <Creature />
         <BattleButton />
       </Flex>
-      <Flex h="100%" align="flex-start">
+      <Flex w="280px" align="flex-start" justify={"flex-end"}>
         <ConnectWallet />
       </Flex>
     </Flex>

@@ -17,7 +17,8 @@ export const Navbar: React.FC = () => {
           h="80px"
           onClick={() => handleNavigation("/")}
           cursor="pointer"
-          _hover={{ width: "170px", transition: "all 0.3s" }}
+          transition="all 0.2s"
+          _hover={{ width: "170px" }}
           onDragStart={(event) => event.preventDefault()}
         >
           <Image
@@ -35,7 +36,8 @@ export const Navbar: React.FC = () => {
           h="80px"
           onClick={() => handleNavigation("/collection")}
           cursor="pointer"
-          _hover={{ width: "290px", transition: "all 0.3s" }}
+          transition="all 0.2s"
+          _hover={{ width: "290px" }}
           onDragStart={(event) => event.preventDefault()}
         >
           <Image
@@ -53,7 +55,8 @@ export const Navbar: React.FC = () => {
           h="80px"
           onClick={() => handleNavigation("/drop")}
           cursor="pointer"
-          _hover={{ width: "160px", transition: "all 0.3s" }}
+          transition="all 0.2s"
+          _hover={{ width: "160px" }}
           onDragStart={(event) => event.preventDefault()}
         >
           <Image
