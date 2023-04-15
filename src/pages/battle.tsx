@@ -7,6 +7,7 @@ import { useState } from "react";
 import useStore from "../store";
 import Typist from "react-typist";
 import { HealthAndManaBar } from "../components/HealthAndManaBar";
+import { BattleDialog } from "../components/BattleDialog";
 
 const Battle = () => {
   const [isBattleOver, setIsBattleOver] = useState(false);
@@ -23,30 +24,21 @@ const Battle = () => {
 
         <Flex w="60%" py="1rem">
           <Flex direction="column">
-            <HealthAndManaBar health={100} mana={10} />
-            <Creature />
+            <HealthAndManaBar health={200} mana={10} />
+            <Flex mt="4rem">
+              <Creature width={350} height={550} />
+            </Flex>
           </Flex>
 
           <Spacer />
 
           <Flex direction="column">
-            <HealthAndManaBar health={100} mana={10} />
+            <HealthAndManaBar health={200} mana={10} />
             <Creature width={300} height={500} flipX />
           </Flex>
         </Flex>
 
-        <Flex
-          bg="#fff"
-          w="80%"
-          border={"4px blue solid"}
-          borderRadius="10px"
-          py="16px"
-          px="16px"
-        >
-          <Typist avgTypingDelay={20}>
-            <Text fontSize="1.8rem">{battleMsg}</Text>
-          </Typist>
-        </Flex>
+        <BattleDialog />
       </Flex>
     </Container>
   );

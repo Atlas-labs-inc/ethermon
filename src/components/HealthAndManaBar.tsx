@@ -2,7 +2,7 @@ import React from "react";
 import { Box, Flex, Circle, Progress, Spacer, Text } from "@chakra-ui/react";
 
 export const HealthAndManaBar = ({ health, mana }) => {
-  const maxHealth = 100;
+  const maxHealth = 200;
   const maxMana = 10;
 
   const manaCircles = new Array(maxMana)
@@ -17,9 +17,9 @@ export const HealthAndManaBar = ({ health, mana }) => {
     ));
 
   return (
-    <Flex direction="column" alignItems="flex-start">
+    <Flex direction="column" alignItems="flex-start" width="400px">
       <Text fontWeight="bold" mb={1}>
-        Health:
+        Health ({health}/{maxHealth}):
       </Text>
       <Box w="100%" mb={4}>
         <Progress
@@ -31,7 +31,7 @@ export const HealthAndManaBar = ({ health, mana }) => {
         />
       </Box>
       <Text fontWeight="bold" mb={1}>
-        Mana:
+        Mana ({mana}/{maxMana}):
       </Text>
       <Flex>
         {manaCircles}
