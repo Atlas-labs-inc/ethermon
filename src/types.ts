@@ -1,6 +1,8 @@
 export type Ethermon = {
   id: number;
   name: string;
+  type: string;
+  moveList: string[];
   image: string;
 };
 
