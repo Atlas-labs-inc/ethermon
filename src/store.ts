@@ -4,6 +4,8 @@ import { Ethermon, Battle } from "./types";
 type Store = {
   selectedCreature: Ethermon;
   setSelectedCreature: (creature: Ethermon) => void;
+  opponent: Ethermon;
+  setOpponent: (opponent: Ethermon) => void;
   walletAddress: string;
   setWalletAddress: (address: string) => void;
   // chainId: number;
@@ -17,8 +19,10 @@ type Store = {
   setMetamaskProvider: (provider: any) => void;
   monsterCurrentlyViewing: Ethermon;
   setMonsterCurrentlyViewing: (monster: Ethermon) => void;
-  // showGameOverModal: boolean;
-  // showGameOverModal
+  isBattleOver: boolean;
+  setIsBattleOver: (isOver: boolean) => void;
+  didUserWin: boolean;
+  setDidUserWin: (didWin: boolean) => void;
 };
 
 const useStore = create<Store>((set) => ({
@@ -39,7 +43,7 @@ const useStore = create<Store>((set) => ({
         heal: 0,
       },
       {
-        name: "Ember",
+        name: "ember",
         type: "Fire",
         damage: 60,
         manaCost: 20,
@@ -50,7 +54,7 @@ const useStore = create<Store>((set) => ({
         heal: 0,
       },
       {
-        name: "Fire Fang",
+        name: "solar beam",
         type: "Fire",
         damage: 80,
         manaCost: 30,
@@ -61,7 +65,7 @@ const useStore = create<Store>((set) => ({
         heal: 0,
       },
       {
-        name: "Flamethrower",
+        name: "splash",
         type: "Fire",
         damage: 120,
         manaCost: 50,
@@ -74,8 +78,13 @@ const useStore = create<Store>((set) => ({
     ],
     image: "https://d6hckkykh246u.cloudfront.net/Aquasonic.svg",
   },
-
   setSelectedCreature: (creature) => set({ selectedCreature: creature }),
+  opponent: {
+    name: "Grizzlark",
+    type: "Fire",
+    image: "https://d6hckkykh246u.cloudfront.net/Aquasonic.svg",
+  },
+  setOpponent: (opponent) => set({ opponent: opponent }),
   walletAddress: "",
   setWalletAddress: (address) => set({ walletAddress: address }),
   treasuryAmount: 69.392312,
@@ -208,13 +217,30 @@ const useStore = create<Store>((set) => ({
     // },
   ],
   setCollection: (collection) => set({ collection: collection }),
-  currentBattle: null,
+  currentBattle: {
+    npc: {
+      hp: 200,
+      mana: 10,
+      attack: 100,
+      defense: 100,
+    },
+    player: {
+      hp: 200,
+      mana: 10,
+      attack: 100,
+      defense: 100,
+    },
+  },
   setCurrentBattle: (battle) => set({ currentBattle: battle }),
   metamaskProvider: null,
   setMetamaskProvider: (provider) => set({ metamaskProvider: provider }),
   monsterCurrentlyViewing: null,
   setMonsterCurrentlyViewing: (monster) =>
     set({ monsterCurrentlyViewing: monster }),
+  isBattleOver: false,
+  setIsBattleOver: (isOver) => set({ isBattleOver: isOver }),
+  didUserWin: false,
+  setDidUserWin: (didWin) => set({ didUserWin: didWin }),
 }));
 
 export default useStore;

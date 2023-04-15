@@ -1,14 +1,21 @@
 export type Ethermon = {
-  id: number;
+  id?: number;
   name: string;
   type: string;
-  moveList: Move[];
+  moveList?: Move[];
   image: string;
 };
 
+export type BattleState = {
+  attack: number;
+  defense: number;
+  hp: number;
+  mana: number;
+};
+
 export type Battle = {
-  id: number;
-  challenger: Ethermon;
+  npc: BattleState;
+  player: BattleState;
 };
 
 export type Move = {

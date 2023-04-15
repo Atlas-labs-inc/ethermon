@@ -5,7 +5,9 @@ import useStore from "../store";
 import cookies from "../util/cookies";
 
 export const BattleDialog: React.FC = () => {
-  const [isBattleOver, setIsBattleOver] = useState(false);
+  const isBattleOver = useStore((state) => state.isBattleOver);
+  const setIsBattleOver = useStore((state) => state.setIsBattleOver);
+  const setDidUserWin = useStore((state) => state.setDidUserWin);
   const currentBattle = useStore((state) => state.currentBattle);
   const setCurrentBattle = useStore((state) => state.setCurrentBattle);
   const [choosingMove, setChoosingMove] = useState(false);
@@ -55,8 +57,10 @@ export const BattleDialog: React.FC = () => {
       } else if (data?.state === 2) {
         if (data.winner === "npc") {
           setBattleMsg("You Lost!");
+          setDidUserWin(false);
         } else {
           setBattleMsg("You Won!");
+          setDidUserWin(true);
         }
         setIsBattleOver(true);
         ws.close();
@@ -97,6 +101,20 @@ export const BattleDialog: React.FC = () => {
         setChoosingMove(true);
         setBattleMsg("Select your attack!");
         setCurrentRound((prevRound) => prevRound + 1);
+        setCurrentBattle({
+          npc: {
+            hp: Math.floor(receivedData.npc.hp),
+            mana: receivedData.npc.mana,
+            attack: receivedData.npc.attack,
+            defense: receivedData.npc.defense,
+          },
+          player: {
+            hp: Math.floor(receivedData.player.hp),
+            mana: receivedData.player.mana,
+            attack: receivedData.player.attack,
+            defense: receivedData.player.defense,
+          },
+        });
       }
       setRoundUpdated(false);
     };

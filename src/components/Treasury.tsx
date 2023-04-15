@@ -14,10 +14,14 @@ export const Treasury: React.FC = () => {
       fontSize="23px"
       cursor="pointer"
       transition="all 0.2s"
-      _hover={{ width: "290px", fontSize: "24px" }}
+      // _hover={{ width: "290px", fontSize: "24px" }}
       onDragStart={(event) => event.preventDefault()}
     >
-      <Image src="https://d6hckkykh246u.cloudfront.net/Connected.png" w="100%" h="100%" />
+      <Image
+        src="https://d6hckkykh246u.cloudfront.net/Connected.png"
+        w="100%"
+        h="100%"
+      />
       <Text
         position="relative"
         top="-6.5vh"

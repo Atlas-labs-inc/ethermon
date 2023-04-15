@@ -3,7 +3,9 @@ import {
   Spacer,
   Text,
   Button,
+  Image,
   Modal,
+  Box,
   ModalOverlay,
   ModalContent,
   useDisclosure,
@@ -17,15 +19,24 @@ import useStore from "../store";
 import Typist from "react-typist";
 import { HealthAndManaBar } from "../components/HealthAndManaBar";
 import { BattleDialog } from "../components/BattleDialog";
+import { useRouter } from "next/router";
 
 const Battle = () => {
-  const [isBattleOver, setIsBattleOver] = useState(false);
+  const isBattleOver = useStore((state) => state.isBattleOver);
+  const setIsBattleOver = useStore((state) => state.setIsBattleOver);
+  const didUserWin = useStore((state) => state.didUserWin);
   const currentBattle = useStore((state) => state.currentBattle);
   const setCurrentBattle = useStore((state) => state.setCurrentBattle);
   const [isPlayerAttacking, setIsPlayerAttacking] = useState(false);
   const [battleMsg, setBattleMsg] = useState("The battle is about to begin!");
-  const [showGameOverModal, setShowGameOverModal] = useState(false);
 
+  const [userWin, setUserWin] = useState(false);
+
+  const router = useRouter();
+
+  const handleNavigation = (route: string) => {
+    router.push(route);
+  };
   const WinModal = ({ isOpen, onClose }) => {
     return (
       <>
@@ -44,17 +55,34 @@ const Battle = () => {
             >
               <Flex
                 direction="column"
-                bg="white"
+                w="100%"
                 borderRadius="14px"
                 p="20px"
                 alignItems="center"
               >
-                <Text fontSize="2xl" fontWeight="bold" mb="10px">
-                  YOU WIN
-                </Text>
-                <Button onClick={onClose} colorScheme="blue">
-                  Return Home
-                </Button>
+                <Image
+                  w="800px"
+                  src={
+                    userWin
+                      ? "https://d6hckkykh246u.cloudfront.net/win.png"
+                      : "https://d6hckkykh246u.cloudfront.net/lose.png"
+                  }
+                />
+                <Box
+                  w="160px"
+                  h="80px"
+                  onClick={() => handleNavigation("/")}
+                  cursor="pointer"
+                  transition="all 0.2s"
+                  _hover={{ width: "168px" }}
+                  onDragStart={(event) => event.preventDefault()}
+                >
+                  <Image
+                    src={"https://d6hckkykh246u.cloudfront.net/home_green.png"}
+                    w="100%"
+                    h="100%"
+                  />
+                </Box>
               </Flex>
             </ModalContent>
           </Modal>
@@ -65,10 +93,7 @@ const Battle = () => {
 
   return (
     <Container height="100vh">
-      <WinModal
-        isOpen={showGameOverModal}
-        onClose={() => setShowGameOverModal(false)}
-      />
+      <WinModal isOpen={isBattleOver} onClose={() => setIsBattleOver(false)} />
       <Flex
         h="100%"
         p="2rem"
@@ -81,14 +106,20 @@ const Battle = () => {
 
         <Flex w="60%" align={"flex-end"} justify="flex-end" py="1rem">
           <Flex direction="column">
-            <HealthAndManaBar health={200} mana={10} />
+            <HealthAndManaBar
+              health={currentBattle.player.hp}
+              mana={currentBattle.player.mana}
+            />
             <Flex mt="0px">
               <Creature width={350} height={550} />
             </Flex>
           </Flex>
           <Spacer />
           <Flex direction="column">
-            <HealthAndManaBar health={200} mana={10} />
+            <HealthAndManaBar
+              health={currentBattle.npc.hp}
+              mana={currentBattle.npc.mana}
+            />
             <Creature width={300} height={500} flipX />
           </Flex>
         </Flex>
