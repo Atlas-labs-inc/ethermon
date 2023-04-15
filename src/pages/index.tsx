@@ -28,8 +28,8 @@ const Index = () => {
           <Treasury />
 
           <Spacer />
-          {/* <Creature height={650} /> */}
-          <Image mb='-130px' src={selectedCreature.image} objectFit="contain" height={'100%'} />
+          <Creature height={650} imageURL={selectedCreature.image} />
+          {/* <Image mb='-130px' src={selectedCreature.image} objectFit="contain" height={'100%'} /> */}
           <Flex w="600px" borderRadius={"10px"} align="center" justify="center">
             <Box
               mt="10px"

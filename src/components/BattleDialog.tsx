@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Flex, Text } from "@chakra-ui/react";
+import { Box, Flex, Text, Image, Grid } from "@chakra-ui/react";
 import Typist from "react-typist";
 import useStore from "../store";
 import cookies from "../util/cookies";
@@ -10,6 +10,7 @@ export const BattleDialog: React.FC = () => {
   const setCurrentBattle = useStore((state) => state.setCurrentBattle);
   const [showChooseMove, setShowChooseMove] = useState(false);
   const [battleMsg, setBattleMsg] = useState("The battle is about to begin...");
+  const selectedCreature = useStore((state) => state.selectedCreature);
 
   const [socket, setSocket] = useState(null);
 
@@ -120,16 +121,95 @@ export const BattleDialog: React.FC = () => {
 
   return (
     <Flex
-      bg="rgba(0,0,0,0.5)"
-      w="70%"
-      // border={"4px blue solid"}
       borderRadius="10px"
-      py="16px"
-      px="16px"
+      py="10px"
+      px="10px"
+      align={"center"}
+      justify={"center"}
     >
-      <Typist avgTypingDelay={20} key={battleMsg}>
-        <Text fontSize="1.8rem">{battleMsg}</Text>
+
+      <Grid templateColumns="repeat(2, 1fr)">
+        <Flex
+          w="440px"
+          h="200px"
+          cursor="pointer"
+          transition="all 0.2s"
+          onDragStart={(event) => event.preventDefault()}
+          alignItems="center"
+          justifyContent="center"
+          position="relative"
+          overflow="hidden"
+          m={0}
+          p={0}
+        >
+                <Typist
+        avgTypingDelay={20}
+        align="center"
+        position="absolute"
+        zIndex="1"
+        key={battleMsg}
+      >
+        <Text
+                        right='60px'
+      left='130px'
+          position="absolute"
+          color="white"
+          fontSize="24px"
+          fontWeight="bold"
+          zIndex={1}
+        >
+          {battleMsg}
+        </Text>
       </Typist>
+          <Image
+            src="https://d6hckkykh246u.cloudfront.net/chat.png"
+            w="100%"
+            h="100%"
+            position="absolute"
+            top={0}
+            left={0}
+          />
+        </Flex>
+        <Grid
+          templateColumns="repeat(2, 1fr)"
+          templateRows="repeat(2, 1fr)"
+          gap={0}
+        >
+          {selectedCreature.moveList.map((move) => (
+            <Flex
+              w="220px"
+              h="100px"
+              cursor="pointer"
+              transition="all 0.2s"
+              onDragStart={(event) => event.preventDefault()}
+              alignItems="center"
+              justifyContent="center"
+              position="relative"
+              overflow="hidden"
+              m={0}
+              p={0}
+            >
+              <Text
+                mb="18px"
+                color="white"
+                fontSize="24px"
+                fontWeight="bold"
+                zIndex={1}
+              >
+                {move}
+              </Text>
+              <Image
+                src="https://d6hckkykh246u.cloudfront.net/GreenBlank.png"
+                w="100%"
+                h="100%"
+                position="absolute"
+                top={0}
+                left={0}
+              />
+            </Flex>
+          ))}
+        </Grid>
+      </Grid>
     </Flex>
   );
 };

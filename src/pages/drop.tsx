@@ -33,7 +33,8 @@ const Drop = () => (
       onDragStart={(event) => event.preventDefault()}
     >
       <Image src="https://d6hckkykh246u.cloudfront.net/BattleButton.png" w="100%" h="100%" />
-    </Box>      </Flex>
+    </Box>      
+    </Flex>
       <Flex w="280px" align="flex-start" justify={"flex-start"}>
         <ConnectWallet />
       </Flex>

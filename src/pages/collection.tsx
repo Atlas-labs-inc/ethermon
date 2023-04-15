@@ -18,7 +18,6 @@ import { Creature } from "../components/Creature";
 import useStore from "../store";
 import { useEffect } from "react";
 import { useRouter } from "next/router";
-import { loadImage, createCanvas } from 'canvas';
 
 const Collection = () => {
   const setSelectedCreature = useStore((state) => state.setSelectedCreature);
@@ -236,7 +235,7 @@ const getBorderColorByType = (type) => {
                 mb="-20px"
                 w="180px"
                 h="80px"
-                onClick={() => {setMonsterCurrentlyViewing(null), setSelectedCreature(monsterCurrentlyViewing), handleNavigation("/")}}
+                onClick={() => {setSelectedCreature(monsterCurrentlyViewing), handleNavigation("/")}}
                 cursor="pointer"
                 transition="all 0.2s"
                 _hover={{ width: "188px" }}

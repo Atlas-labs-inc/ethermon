@@ -7,6 +7,8 @@ import styles from "./Creature.module.css";
 
 interface CreatureProps {
   id?: number;
+  imageURL?: string;
+  image?: string;
   contractAddress?: string;
   abi?: any;
   width?: number;
@@ -14,12 +16,13 @@ interface CreatureProps {
   flipX?: boolean;
 }
 
-const GrizzlarkSvg = dynamic(() => import("../components/Grizzlark"), {
-  ssr: false,
-});
+// const GrizzlarkSvg = dynamic(() => import("../components/Grizzlark"), {
+//   ssr: false,
+// });
 
 export const Creature: React.FC<CreatureProps> = ({
   id,
+  imageURL,
   contractAddress,
   abi,
   width,
@@ -47,14 +50,17 @@ export const Creature: React.FC<CreatureProps> = ({
   //   fetchSVG();
   // }, [id, contractAddress, abi]);
 
-  // return (
-  //   <ReactSVG wrapper="div" src={`data:image/svg+xml,${encodeURIComponent(svg)}`} />
-  // );
   return (
-    <GrizzlarkSvg
-      width={width ? width : 467}
-      height={height ? height : 600}
-      className={flipX ? styles.flip : ""}
-    />
+    <ReactSVG wrapper="div" src={imageURL}         style={{
+          width: width ? width : 467,
+          height: height ? height : 600,
+        }} />
   );
+  // return (
+  //   <GrizzlarkSvg
+  //     width={width ? width : 467}
+  //     height={height ? height : 600}
+  //     className={flipX ? styles.flip : ""}
+  //   />
+  // );
 };
