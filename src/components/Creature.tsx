@@ -29,7 +29,7 @@ export const Creature: React.FC<CreatureProps> = ({
   height,
   flipX,
 }) => {
-  const [svg, setSvg] = useState<string>("");
+  // const [svg, setSvg] = useState<string>("");
   console.log("flipX:", flipX);
   // useEffect(() => {
   //   const fetchSVG = async () => {
@@ -51,10 +51,15 @@ export const Creature: React.FC<CreatureProps> = ({
   // }, [id, contractAddress, abi]);
 
   return (
-    <ReactSVG wrapper="div" src={imageURL}         style={{
-          width: width ? width : 467,
-          height: height ? height : 600,
-        }} />
+    // <ReactSVG
+    //   wrapper="div"
+    //   src={imageURL}
+    //   style={{
+    //     width: width ? width : 467,
+    //     height: height ? height : 600,
+    //   }}
+    // />
+    <div dangerouslySetInnerHTML={{ __html: imageURL }} />
   );
   // return (
   //   <GrizzlarkSvg

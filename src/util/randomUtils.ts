@@ -11,3 +11,19 @@ export const decimalToHexString = (decimal) => {
   let hexString = num.toString(16);
   return "0x" + hexString;
 };
+
+export const base64Decode = (encodedString, isSvg = false) => {
+  let base64Data = encodedString;
+  if (isSvg) {
+    base64Data = encodedString.split("data:image/svg+xml;base64,")[1];
+  } else {
+    base64Data = encodedString.split("data:application/json;base64,")[1];
+  }
+
+  // Check if running in a browser environment
+  if (typeof window !== "undefined" && "atob" in window) {
+    return atob(base64Data);
+  }
+
+  throw new Error("Unable to decode base64 string: environment not supported");
+};

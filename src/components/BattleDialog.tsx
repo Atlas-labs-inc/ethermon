@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Box, Flex, Text, Image, Grid } from "@chakra-ui/react";
+import { Box, Flex, Text, Image, Grid, Spacer } from "@chakra-ui/react";
 import Typist from "react-typist";
 import useStore from "../store";
 import cookies from "../util/cookies";
@@ -19,6 +19,24 @@ export const BattleDialog: React.FC = () => {
   const [currentlyHovered, setCurrentlyHovered] = useState(null);
   const [roundUpdated, setRoundUpdated] = useState(false);
   const [receivedData, setReceivedData] = useState(null);
+  const onClickSoundURL = "https://d6hckkykh246u.cloudfront.net/selec.mp3";
+  const onHoverSoundURL = "https://d6hckkykh246u.cloudfront.net/chime.mp3";
+  const onAttackSoundURL = "https://d6hckkykh246u.cloudfront.net/attack.mp3";
+
+  const playOnClickSound = () => {
+    const audio = new Audio(onClickSoundURL);
+    audio.play();
+  };
+
+  const playOnHoverSound = () => {
+    const audio = new Audio(onHoverSoundURL);
+    audio.play();
+  };
+
+  const playAttackSound = () => {
+    const audio = new Audio(onAttackSoundURL);
+    audio.play();
+  };
 
   useEffect(() => {
     // const ws = new WebSocket("ws://127.0.0.1:8000/play");
@@ -123,6 +141,7 @@ export const BattleDialog: React.FC = () => {
   }, [roundUpdated]);
 
   const getMoveEffect = (move: string) => {
+    playAttackSound();
     return "It's super effective!";
   };
 
@@ -139,16 +158,18 @@ export const BattleDialog: React.FC = () => {
     const secondMoveEffect = getMoveEffect(secondMove);
     const script = [
       `${firstPlayer} is attacking first.`,
-      `${firstPlayer} used ${firstMove}!`,
+      `${firstPlayer} used ${firstMove.toUpperCase()}!`,
     ];
     if (firstMoveEffect) {
+      playAttackSound();
       script.push(firstMoveEffect);
     }
     // if move kills, end battle
     // setIsBattleOver(true)
 
-    script.push(`${secondPlayer} used ${secondMove}!`);
+    script.push(`${secondPlayer} used ${secondMove.toUpperCase()}!`);
     if (secondMoveEffect) {
+      playAttackSound();
       script.push(secondMoveEffect);
     }
     const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
@@ -173,135 +194,245 @@ export const BattleDialog: React.FC = () => {
   };
 
   return (
-    <Flex
-      borderRadius="24px"
-      bg="rgba(0,0,0,0.4)"
-      border="4px"
-      borderColor={"#555"}
-      p="12px"
-      align={"center"}
-      justify={"center"}
-    >
-      <Grid templateColumns="repeat(2, 1fr)">
-        <Flex
-          w="540px"
-          h="200px"
-          cursor="pointer"
-          transition="all 0.2s"
-          onDragStart={(event) => event.preventDefault()}
-          alignItems="center"
-          justifyContent="center"
-          position="relative"
-          overflow="hidden"
-          m={0}
-          p={0}
-        >
-          <Typist
-            avgTypingDelay={20}
-            ml="200px"
-            align="center"
-            position="absolute"
-            zIndex="1"
-            key={battleMsg}
+    <Flex w="78%" direction="column" align="center">
+      <Box
+        w="125px"
+        h="70px"
+        onClick={() => selectMove("skip")}
+        cursor="pointer"
+        transition="all 0.2s"
+        onMouseEnter={() => {
+          playOnHoverSound();
+        }}
+        onDragStart={(event) => event.preventDefault()}
+        _hover={{ width: "130px" }}
+      >
+        <Image
+          src={"https://d6hckkykh246u.cloudfront.net/skip.png"}
+          w="100%"
+          h="100%"
+        />
+      </Box>
+      <Flex
+        borderRadius="24px"
+        bg="rgba(0,0,0,0.4)"
+        border="4px"
+        borderColor={"#555"}
+        p="12px"
+        align={"center"}
+        justify={"center"}
+      >
+        <Grid templateColumns="repeat(2, 1fr)">
+          <Flex
+            w="540px"
+            h="200px"
+            cursor="pointer"
+            transition="all 0.2s"
+            onDragStart={(event) => event.preventDefault()}
+            alignItems="center"
+            justifyContent="center"
+            position="relative"
+            overflow="hidden"
+            m={0}
+            p={0}
           >
-            <Text
-              top="25px"
-              left="37px"
-              fontStyle={"italic"}
+            <Typist
+              avgTypingDelay={20}
+              ml="200px"
+              align="center"
               position="absolute"
-              color="white"
-              fontSize="28px"
-              fontWeight="bold"
-              zIndex={1}
+              zIndex="1"
+              key={battleMsg}
             >
-              {battleMsg}
-            </Text>
-          </Typist>
-          <Image
-            src="https://d6hckkykh246u.cloudfront.net/Black.png"
-            opacity={0.7}
-            w="100%"
-            h="100%"
-            position="absolute"
-            top={0}
-            left={0}
-          />
-        </Flex>
-        <Grid
-          templateColumns="repeat(2, 0fr)"
-          templateRows="repeat(2, 0fr)"
-          gap={0}
-        >
-          {selectedCreature.moveList.map((move) => {
-            const [isHovered, setIsHovered] = useState(false);
-
-            return (
-              <Flex
-                key={move.name}
-                w="270px"
-                h="100px"
-                cursor="pointer"
-                transition="all 0.2s"
-                onDragStart={(event) => event.preventDefault()}
-                onClick={() => {
-                  if (choosingMove) {
-                    selectMove(move.name);
-                    setChoosingMove(false);
-                  }
-                }}
-                onMouseEnter={() => {
-                  if (choosingMove) {
-                    setIsHovered(true);
-                    setPrevBattleMsg(battleMsg);
-                    setBattleMsg(move.name);
-                  }
-                }}
-                onMouseLeave={() => {
-                  if (choosingMove) {
-                    setIsHovered(false);
-                    setBattleMsg(prevBattleMsg);
-                  }
-                }}
-                alignItems="center"
-                justifyContent="center"
-                position="relative"
-                overflow="hidden"
-                m={0}
-                p={0}
+              <Text
+                top="25px"
+                left="37px"
+                fontStyle={"italic"}
+                position="absolute"
+                color="white"
+                fontSize="28px"
+                fontWeight="bold"
+                zIndex={1}
               >
-                <Text
-                  mb="15px"
-                  color="#eee"
-                  fontSize="28px"
-                  fontWeight="800"
-                  userSelect={"none"}
-                  zIndex={1}
-                >
-                  {move.name}
-                </Text>
-                <Image
-                  opacity={choosingMove ? 1 : 0.5}
-                  src={"https://d6hckkykh246u.cloudfront.net/GreenButton.png"}
-                  w="100%"
-                  h="100%"
-                  position="absolute"
-                  top={0}
-                  left={0}
-                />
-                <Image
-                  src={"https://d6hckkykh246u.cloudfront.net/Gold.png"}
-                  opacity={isHovered ? 100 : 0}
-                  w="100%"
-                  h="100%"
-                  position="absolute"
-                  top={0}
-                  left={0}
-                />
-              </Flex>
-            );
-          })}
+                {battleMsg}
+              </Text>
+            </Typist>
+            <Image
+              src="https://d6hckkykh246u.cloudfront.net/Black.png"
+              opacity={0.7}
+              w="100%"
+              h="100%"
+              position="absolute"
+              top={0}
+              left={0}
+            />
+          </Flex>
+          <Grid
+            templateColumns="repeat(2, 0fr)"
+            templateRows="repeat(2, 0fr)"
+            gap={0}
+          >
+            {selectedCreature.moveList.map((move) => {
+              const [isHovered, setIsHovered] = useState(false);
+
+              if (choosingMove && currentBattle.player.mana > move.manaCost) {
+                return (
+                  <Flex
+                    key={move.name}
+                    w="270px"
+                    h="100px"
+                    cursor="pointer"
+                    transition="all 0.2s"
+                    onDragStart={(event) => event.preventDefault()}
+                    onClick={() => {
+                      playOnClickSound();
+                      selectMove(move.name);
+                      setChoosingMove(false);
+                    }}
+                    onMouseEnter={() => {
+                      playOnHoverSound();
+                      setIsHovered(true);
+                      setPrevBattleMsg(battleMsg);
+                      setBattleMsg(move.name.toUpperCase());
+                    }}
+                    onMouseLeave={() => {
+                      setIsHovered(false);
+                      setBattleMsg(prevBattleMsg);
+                    }}
+                    alignItems="center"
+                    justifyContent="center"
+                    position="relative"
+                    overflow="hidden"
+                    m={0}
+                    p={0}
+                  >
+                    <Flex direction="column" w="80%" textAlign={"center"}>
+                      <Text
+                        mb="-10px"
+                        color="#eee"
+                        fontSize="28px"
+                        fontWeight="800"
+                        userSelect={"none"}
+                        zIndex={1}
+                      >
+                        {move.name.toUpperCase()}
+                      </Text>
+                      <Flex justify={"center"} w="100%">
+                        <Image
+                          zIndex={3}
+                          mt="8px"
+                          mr="5px"
+                          opacity={0.9}
+                          src="https://cdn-icons-png.flaticon.com/512/217/217853.png"
+                          w="25px"
+                          h="25px"
+                        />
+                        <Text
+                          mb="5px"
+                          color="#eee"
+                          fontSize="28px"
+                          fontWeight="800"
+                          userSelect={"none"}
+                          zIndex={1}
+                        >
+                          {move.manaCost}
+                        </Text>
+                      </Flex>
+                    </Flex>
+                    <Image
+                      opacity={1}
+                      src={
+                        "https://d6hckkykh246u.cloudfront.net/GreenButton.png"
+                      }
+                      w="100%"
+                      h="100%"
+                      position="absolute"
+                      top={0}
+                      left={0}
+                    />
+                    <Image
+                      src={"https://d6hckkykh246u.cloudfront.net/Gold.png"}
+                      opacity={isHovered ? 100 : 0}
+                      w="100%"
+                      h="100%"
+                      position="absolute"
+                      top={0}
+                      left={0}
+                    />
+                  </Flex>
+                );
+              } else {
+                return (
+                  <Flex
+                    key={move.name}
+                    w="270px"
+                    h="100px"
+                    cursor="pointer"
+                    transition="all 0.2s"
+                    onDragStart={(event) => event.preventDefault()}
+                    alignItems="center"
+                    justifyContent="center"
+                    position="relative"
+                    overflow="hidden"
+                    m={0}
+                    p={0}
+                  >
+                    <Flex
+                      direction="column"
+                      w="80%"
+                      textAlign={"center"}
+                      opacity={0.4}
+                    >
+                      <Text
+                        mb="-10px"
+                        color="#eee"
+                        fontSize="28px"
+                        fontWeight="800"
+                        userSelect={"none"}
+                        zIndex={1}
+                      >
+                        {move.name.toUpperCase()}
+                      </Text>
+                      <Flex justify={"center"} w="100%">
+                        <Image
+                          zIndex={3}
+                          mt="8px"
+                          mr="5px"
+                          opacity={0.9}
+                          src="https://cdn-icons-png.flaticon.com/512/217/217853.png"
+                          w="25px"
+                          h="25px"
+                        />
+                        <Text
+                          mb="5px"
+                          color="#eee"
+                          fontSize="28px"
+                          fontWeight="800"
+                          userSelect={"none"}
+                          zIndex={1}
+                        >
+                          {move.manaCost}
+                        </Text>
+                      </Flex>
+                    </Flex>
+                    <Image
+                      opacity={0.4}
+                      src={
+                        "https://d6hckkykh246u.cloudfront.net/GreenButton.png"
+                      }
+                      w="100%"
+                      h="100%"
+                      position="absolute"
+                      top={0}
+                      left={0}
+                    />
+                  </Flex>
+                );
+              }
+            })}
+          </Grid>
         </Grid>
-      </Grid>
+      </Flex>
     </Flex>
   );
 };

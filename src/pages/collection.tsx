@@ -48,7 +48,7 @@ const Collection = () => {
   const getBorderColorByType = (type) => {
     switch (type) {
       case "Fire":
-        return useColorModeValue("red.900", "red.400");
+        return useColorModeValue("red.500", "red.400");
       case "Water":
         return useColorModeValue("blue.500", "blue.400");
       case "Grass":
@@ -203,7 +203,7 @@ const Collection = () => {
                       align="center"
                     >
                       {monsterCurrentlyViewing.moveList.map((move) => (
-                        <Text>{move.name}</Text>
+                        <Text>{move.name.toUpperCase()}</Text>
                       ))}
                     </Text>
                   </Flex>

@@ -8,6 +8,19 @@ export const Navbar: React.FC = () => {
   const handleNavigation = (route: string) => {
     router.push(route);
   };
+  const onClickSoundURL = "https://d6hckkykh246u.cloudfront.net/selec.mp3";
+  const onHoverSoundURL = "https://d6hckkykh246u.cloudfront.net/chime.mp3";
+  const onAttackSoundURL = "https://d6hckkykh246u.cloudfront.net/attack.mp3";
+
+  const playOnClickSound = () => {
+    const audio = new Audio(onClickSoundURL);
+    audio.play();
+  };
+
+  const playOnHoverSound = () => {
+    const audio = new Audio(onHoverSoundURL);
+    audio.play();
+  };
 
   return (
     <Flex alignSelf={"flex-start"}>
@@ -18,8 +31,11 @@ export const Navbar: React.FC = () => {
           onClick={() => handleNavigation("/")}
           cursor="pointer"
           transition="all 0.2s"
-          _hover={{ width: "168px" }}
+          onMouseEnter={() => {
+            playOnHoverSound();
+          }}
           onDragStart={(event) => event.preventDefault()}
+          _hover={{ width: "168px" }}
         >
           <Image
             src={
@@ -36,6 +52,9 @@ export const Navbar: React.FC = () => {
           h="80px"
           onClick={() => handleNavigation("/collection")}
           cursor="pointer"
+          onMouseEnter={() => {
+            playOnHoverSound();
+          }}
           transition="all 0.2s"
           _hover={{ width: "288px" }}
           onDragStart={(event) => event.preventDefault()}

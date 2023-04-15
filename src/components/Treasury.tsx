@@ -27,7 +27,6 @@ export const Treasury: React.FC = () => {
         top="-6.5vh"
         align={"center"}
         textAlign="center"
-        fontFamily={"Inter"}
         fontStyle="italic"
         color="white"
         fontWeight={"900"}

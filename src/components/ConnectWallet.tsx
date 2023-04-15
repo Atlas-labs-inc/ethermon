@@ -20,7 +20,11 @@ import {
   ModalCloseButton,
 } from "@chakra-ui/react";
 import { ethers } from "ethers";
-import { decimalToHexString, formatHash } from "../util/randomUtils";
+import {
+  decimalToHexString,
+  formatHash,
+  base64Decode,
+} from "../util/randomUtils";
 import detectEthereumProvider from "@metamask/detect-provider";
 import { ChevronDownIcon } from "@chakra-ui/icons";
 import colors from "../util/colors";
@@ -28,6 +32,7 @@ import { NetworkMap } from "../util/networkMap";
 import { useToast } from "@chakra-ui/react";
 import { SiweMessage } from "siwe";
 import cookies from "../util/cookies";
+import { abi } from "../abi";
 
 export const ConnectWallet = () => {
   const [connected, setConnected] = useState(false);
@@ -40,6 +45,8 @@ export const ConnectWallet = () => {
   const accountRef = useRef("");
   const [showModal, setShowModal] = useState(false);
   const toast = useToast();
+  const setCollection = useStore((state) => state.setCollection);
+  const setSelectedCreature = useStore((state) => state.setSelectedCreature);
 
   useEffect(() => {
     const providerExists = detectEthereumProvider();
@@ -51,15 +58,79 @@ export const ConnectWallet = () => {
     }
   }, []);
 
+  useEffect(() => {
+    const getAllData = async () => {
+      console.log("chainId: ", chainId);
+      console.log("account: ", account);
+      const contract = new ethers.Contract(
+        NetworkMap[chainId]?.contractAddress,
+        abi,
+        metamaskProvider
+      );
+      let owned = [];
+      const numTokens = await contract.nextTokenId();
+      for (let i = 1; i < numTokens; i++) {
+        const owner = await contract.ownerOf(i);
+        console.log("owner of", i, "is", owner);
+        if (
+          ethers.utils.getAddress(owner) === ethers.utils.getAddress(account)
+        ) {
+          owned.push(i);
+        }
+      }
+      console.log("owned:", owned);
+
+      const collectionPromises = owned.map(async (id) => {
+        console.log("id:", id);
+        const data = await contract.tokenURI(id);
+        const decoded = JSON.parse(base64Decode(data));
+        // console.log("decoded attribs", decoded.name);
+        const moveList = decoded.attributes.map((move) => {
+          return {
+            name: move.value,
+            type: move.trait_type,
+            damage: move.damage,
+            manaCost: move.manaCost,
+            buffType: move.buffType,
+            buffAmount: move.buffAmount,
+            debuffType: move.debuffType,
+            debuffAmount: move.debuffAmount,
+            heal: move.heal,
+          };
+        });
+        const obj = {
+          id,
+          name: decoded.name,
+          type: decoded.monster_type,
+          moveList,
+          image: base64Decode(decoded.image, true),
+        };
+        return obj;
+      });
+      const collection = await Promise.all(collectionPromises);
+      console.log("collection:", collection);
+      setCollection(collection);
+      console.log("collection[0]", collection[0]);
+      setSelectedCreature(collection[0]);
+    };
+
+    if (chainId !== 0 && account !== "") {
+      getAllData();
+    }
+  }, [chainId, account]);
+
   const updateProvider = () => {
     const provider = new ethers.providers.Web3Provider(window.ethereum);
     setMetamaskProvider(provider);
   };
 
   useEffect(() => {
-    if (metamaskProvider && (window.ethereum as any).selectedAddress) {
-      // connectAccount((window.ethereum as any).selectedAddress);
-    }
+    const load = async () => {
+      if (metamaskProvider && (window.ethereum as any).selectedAddress) {
+        await connectAccount((window.ethereum as any).selectedAddress);
+      }
+    };
+    load();
   }, [metamaskProvider]);
 
   const createSiweMessage = (address, nonce) => {
@@ -136,6 +207,7 @@ export const ConnectWallet = () => {
   const connectAccount = async (account: string) => {
     await updateAccount(account);
     const id = await metamaskProvider.send("eth_chainId", []);
+    console.log("chain id from connectAccount: ", id);
     setChainId(parseInt(id, 16));
 
     setConnected(true);
@@ -223,7 +295,6 @@ export const ConnectWallet = () => {
             top="-6.75vh"
             align={"center"}
             textAlign="center"
-            fontFamily={"Inter"}
             fontStyle="italic"
             fontSize="26px"
             color="white"
@@ -289,7 +360,11 @@ export const ConnectWallet = () => {
           _hover={{ width: "308px" }}
           onDragStart={(event) => event.preventDefault()}
         >
-          <Image src="https://d6hckkykh246u.cloudfront.net/Connect.png" w="100%" h="100%" />
+          <Image
+            src="https://d6hckkykh246u.cloudfront.net/Connect.png"
+            w="100%"
+            h="100%"
+          />
         </Box>
       </Flex>
     );

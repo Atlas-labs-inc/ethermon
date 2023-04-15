@@ -12,39 +12,50 @@ const AudioPlayer = () => {
   useEffect(() => {
     const handleRouteChange = (url: string) => {
       if (audioRef.current) {
-        audioRef.current.pause();
-        audioRef.current.currentTime = 0;
+        const currentAudioSource = audioRef.current.src;
+        let newAudioSource = currentAudioSource;
 
         // Set audio source based on the current route
         switch (url) {
-          case "/":
-            audioRef.current.src =
-              "https://d6hckkykh246u.cloudfront.net/tuna.mp3";
-            break;
-          case "/page2":
-            audioRef.current.src =
-              "https://d6hckkykh246u.cloudfront.net/smash.mp3";
+          case "/battle":
+            newAudioSource = "https://d6hckkykh246u.cloudfront.net/fight.mp3";
             break;
           default:
-            audioRef.current.src =
-              "https://d6hckkykh246u.cloudfront.net/tuna.mp3";
+            newAudioSource = "https://d6hckkykh246u.cloudfront.net/smash.mp3";
             break;
         }
 
-        audioRef.current.play();
+        // Only change and restart the audio if the source is different
+        if (newAudioSource !== currentAudioSource) {
+          audioRef.current.pause();
+          audioRef.current.currentTime = 0;
+          audioRef.current.src = newAudioSource;
+          audioRef.current.load(); // Add this line
+        }
       }
     };
+
+    handleRouteChange(router.pathname);
 
     router.events.on("routeChangeComplete", handleRouteChange);
 
     return () => {
       router.events.off("routeChangeComplete", handleRouteChange);
     };
-  }, [router.events]);
+  }, [router.events, router.pathname]);
+
+  const handleLoadedMetadata = () => {
+    if (audioRef.current) {
+      audioRef.current.play();
+    }
+  };
 
   return (
-    <audio ref={audioRef} loop>
-      <source src="/path/to/default-music.mp3" type="audio/mpeg" />
+    <audio ref={audioRef} loop onLoadedMetadata={handleLoadedMetadata}>
+      <source
+        src="https://d6hckkykh246u.cloudfront.net/smash.mp3"
+        type="audio/mpeg"
+      />
     </audio>
   );
 };
@@ -52,9 +63,6 @@ const AudioPlayer = () => {
 function MyApp({ Component, pageProps }: AppProps) {
   return (
     <ChakraProvider theme={theme}>
-      <Head>
-        <title>EthMonsters</title>
-      </Head>
       <AudioPlayer />
       <Component {...pageProps} />
     </ChakraProvider>

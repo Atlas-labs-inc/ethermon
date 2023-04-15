@@ -30,8 +30,6 @@ const Battle = () => {
   const [isPlayerAttacking, setIsPlayerAttacking] = useState(false);
   const [battleMsg, setBattleMsg] = useState("The battle is about to begin!");
 
-  const [userWin, setUserWin] = useState(false);
-
   const router = useRouter();
 
   const handleNavigation = (route: string) => {
@@ -63,7 +61,7 @@ const Battle = () => {
                 <Image
                   w="800px"
                   src={
-                    userWin
+                    didUserWin
                       ? "https://d6hckkykh246u.cloudfront.net/win.png"
                       : "https://d6hckkykh246u.cloudfront.net/lose.png"
                   }

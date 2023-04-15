@@ -1,0 +1,26 @@
+/* styles/animations.css */
+@keyframes squiggle {
+    0% {
+        transform: scaleX(1);
+    }
+
+    25% {
+        transform: scaleX(0.9);
+    }
+
+    50% {
+        transform: scaleX(1);
+    }
+
+    75% {
+        transform: scaleX(1.1);
+    }
+
+    100% {
+        transform: scaleX(1);
+    }
+}
+
+.squiggle {
+    animation: squiggle 0.2s 2;
+}
