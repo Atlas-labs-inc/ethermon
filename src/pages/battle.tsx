@@ -11,7 +11,6 @@ import { BattleDialog } from "../components/BattleDialog";
 
 const Battle = () => {
   const [isBattleOver, setIsBattleOver] = useState(false);
-  const currentMonster = useStore((state) => state.currentMonster);
   const currentBattle = useStore((state) => state.currentBattle);
   const setCurrentBattle = useStore((state) => state.setCurrentBattle);
   const [isPlayerAttacking, setIsPlayerAttacking] = useState(false);

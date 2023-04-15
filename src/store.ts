@@ -9,8 +9,6 @@ type Store = {
   // chainId: number;
   treasuryAmount: number;
   setTreasuryAmount: (amount: number) => void;
-  currentMonster: Ethermon;
-  setCurrentMonster: (monster: Ethermon) => void;
   collection: Ethermon[];
   setCollection: (collection: Ethermon[]) => void;
   currentBattle: Battle;
@@ -34,8 +32,6 @@ const useStore = create<Store>((set) => ({
   setWalletAddress: (address) => set({ walletAddress: address }),
   treasuryAmount: 69.392312,
   setTreasuryAmount: (amount) => set({ treasuryAmount: amount }),
-  currentMonster: null,
-  setCurrentMonster: (monster) => set({ currentMonster: monster }),
   collection: [
     {
       id: 1,

@@ -5,7 +5,6 @@ import useStore from "../store";
 
 export const BattleDialog: React.FC = () => {
   const [isBattleOver, setIsBattleOver] = useState(false);
-  const currentMonster = useStore((state) => state.currentMonster);
   const currentBattle = useStore((state) => state.currentBattle);
   const setCurrentBattle = useStore((state) => state.setCurrentBattle);
   const [showChooseMove, setShowChooseMove] = useState(false);
