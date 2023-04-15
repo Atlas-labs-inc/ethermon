@@ -103,16 +103,22 @@ const Battle = () => {
       >
         <Spacer />
 
-        <Flex w="60%" align={"flex-end"} justify="flex-end" py="1rem">
-          <Flex direction="column">
+        <Flex
+          mt="-500px"
+          w="60%"
+          align={"flex-end"}
+          justify="flex-end"
+          py="1rem"
+        >
+          <Flex direction="column" mr="-80px" mb="-180px">
             <HealthAndManaBar
               health={currentBattle.player.hp}
               mana={currentBattle.player.mana}
             />
-            <Flex mt="0px">
+            <Flex mr="50px">
               <Creature
-                width={350}
-                height={550}
+                width={450}
+                height={650}
                 imageURL={selectedCreature.image}
               />
             </Flex>
@@ -123,7 +129,12 @@ const Battle = () => {
               health={currentBattle.npc.hp}
               mana={currentBattle.npc.mana}
             />
-            <Creature width={300} height={500} flipX />
+            <Creature
+              width={300}
+              height={500}
+              flipX
+              imageURL={selectedCreature.image}
+            />
           </Flex>
         </Flex>
 

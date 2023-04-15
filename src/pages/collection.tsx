@@ -18,6 +18,7 @@ import { Creature } from "../components/Creature";
 import useStore from "../store";
 import { useEffect } from "react";
 import { useRouter } from "next/router";
+import { updateSvgSize } from "../util/randomUtils";
 
 const Collection = () => {
   const setSelectedCreature = useStore((state) => state.setSelectedCreature);
@@ -84,30 +85,37 @@ const Collection = () => {
             src="https://d6hckkykh246u.cloudfront.net/COLLECTION.png"
           />
           {!monsterCurrentlyViewing ? (
-            <Grid mt="15px" templateColumns="repeat(3, 1fr)" gap={4}>
+            <Grid mt="15px" gap={4}>
               {collection.map((item) => (
-                <GridItem
-                  onDragStart={(event) => event.preventDefault()}
-                  transition={"all 0.2s ease-in-out"}
-                  _hover={{
-                    transform: "scale(1.05)",
-                    zIndex: 1,
+                <div
+                  dangerouslySetInnerHTML={{
+                    __html: updateSvgSize(item.image, 250, 250),
                   }}
-                  onClick={() => setMonsterCurrentlyViewing(item)}
-                  bg="rgba(0, 0, 0, 0.8)"
-                  key={item.id}
-                  borderWidth={10}
-                  borderColor={getBorderColorByType(item.type)}
-                  boxShadow="0px 0px 30px rgba(0, 0, 0, 1)"
-                >
-                  <Box
-                    overflow="hidden" // To contain overflowing content
-                    display="flex" // To center the SVG content
-                    alignItems="center" // To center the SVG content vertically
-                    justifyContent="center" // To center the SVG content horizontally
-                    dangerouslySetInnerHTML={{ __html: item.image }}
-                  />
-                </GridItem>
+                />
+                // <GridItem
+                //   onDragStart={(event) => event.preventDefault()}
+                //   transition={"all 0.2s ease-in-out"}
+                //   _hover={{
+                //     transform: "scale(1.05)",
+                //     zIndex: 1,
+                //   }}
+                //   onClick={() => setMonsterCurrentlyViewing(item)}
+                //   bg="rgba(0, 0, 0, 0.8)"
+                //   key={item.id}
+                //   borderWidth={10}
+                //   borderColor={getBorderColorByType(item.type)}
+                //   boxShadow="0px 0px 30px rgba(0, 0, 0, 1)"
+                // >
+                //   <Box
+                //     overflow="hidden" // To contain overflowing content
+                //     display="flex" // To center the SVG content
+                //     alignItems="center" // To center the SVG content vertically
+                //     justifyContent="center" // To center the SVG content horizontally
+                //     dangerouslySetInnerHTML={{
+                //       __html: updateSvgSize(item.image, 20, 20),
+                //     }}
+                //   />
+                // </GridItem>
               ))}
             </Grid>
           ) : (

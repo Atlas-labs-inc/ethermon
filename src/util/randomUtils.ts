@@ -27,3 +27,37 @@ export const base64Decode = (encodedString, isSvg = false) => {
 
   throw new Error("Unable to decode base64 string: environment not supported");
 };
+
+// export const updateSvgSize = (svgString, newWidth, newHeight) => {
+//   const widthRegex = /width="(\d+)"/;
+//   const heightRegex = /height="(\d+)"/;
+
+//   const updatedWidth = svgString.replace(widthRegex, `width="${newWidth}"`);
+//   const updatedHeight = updatedWidth.replace(
+//     heightRegex,
+//     `height="${newHeight}"`
+//   );
+
+//   return updatedHeight;
+// };
+export const updateSvgSize = (svgString, width, height) => {
+  const viewBoxRegex = /(<svg[^>]+)(width="(\d+)")(.*?)(height="(\d+)")(.*?)>/;
+  const match = svgString.match(viewBoxRegex);
+
+  if (match) {
+    const originalWidth = match[3];
+    const originalHeight = match[6];
+    const viewBox = `viewBox="0 0 ${originalWidth} ${originalHeight}"`;
+    const newWidth = `width="${width}"`;
+    const newHeight = `height="${height}"`;
+
+    const updatedSvg = svgString.replace(
+      viewBoxRegex,
+      `$1 ${viewBox} ${newWidth} $4 ${newHeight} $7>`
+    );
+    return updatedSvg;
+  } else {
+    console.error("Invalid SVG string");
+    return null;
+  }
+};
