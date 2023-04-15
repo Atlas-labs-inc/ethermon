@@ -5,6 +5,7 @@ import {
   Box,
   Grid,
   Text,
+  useColorModeValue,
   GridItem,
   useStyleConfig,
 } from "@chakra-ui/react";
@@ -18,6 +19,7 @@ import { BattleButton } from "../components/BattleButton";
 import useStore from "../store";
 import { useEffect } from "react";
 import { useRouter } from "next/router";
+import { loadImage, createCanvas } from 'canvas';
 
 const Collection = () => {
   useEffect(() => {
@@ -40,8 +42,33 @@ const Collection = () => {
   // Here's a placeholder function
   const getAverageColor = (imageSrc) => {
     // Implement your logic to get the average color of an image
-    return "#888";
+    return "#cca92c";
   };
+
+
+const getBorderColorByType = (type) => {
+    switch (type) {
+      case "Fire":
+        return useColorModeValue("red.900", "red.400");
+      case "Water":
+        return useColorModeValue("blue.500", "blue.400");
+      case "Grass":
+        return useColorModeValue("green.500", "green.400");
+      case "Electric":
+        return useColorModeValue("yellow.500", "yellow.400");
+      case "Ice":
+        return useColorModeValue("cyan.500", "cyan.400");
+      case "Poison":
+        return useColorModeValue("purple.500", "purple.400");
+      case "Ground":
+        return useColorModeValue("orange.500", "orange.400");
+      case "Flying":
+        return useColorModeValue("teal.500", "teal.400");
+      case "Psychic":
+        return useColorModeValue("pink.500", "pink.400");
+      default:
+        return "gray.500";
+    }};
 
   return (
     <Container height="100vh">
@@ -68,10 +95,10 @@ const Collection = () => {
                     zIndex: 1,
                   }}
                   onClick={() => setMonsterCurrentlyViewing(item)}
-                  bg="#eee"
+                  bg="rgba(0, 0, 0, 0.8)"
                   key={item.id}
                   borderWidth={10}
-                  borderColor={getAverageColor(item.image)}
+                  borderColor={getBorderColorByType(item.type)}
                   boxShadow="0px 0px 30px rgba(0, 0, 0, 1)"
                 >
                   <Image src={item.image} objectFit="contain" boxSize="240px" />
@@ -80,11 +107,11 @@ const Collection = () => {
             </Grid>
           ) : (
             <Flex direction="column" align={"center"} mt="10px">
-              <Flex mt="10px" boxShadow="0px 30px 30px rgba(0, 0, 0, 1)">
+              <Flex mt="10px" boxShadow="0px 30px 30px rgba(0, 0, 0, 0.8)">
                 <Flex
                   borderWidth={20}
-                  borderColor={getAverageColor(monsterCurrentlyViewing.image)}
-                  bg="#eee"
+                  borderColor={getBorderColorByType(monsterCurrentlyViewing.type)}
+                  bg="rgba(0, 0, 0, 0.8)"
                 >
                   <Image
                     src={monsterCurrentlyViewing.image}
@@ -94,7 +121,12 @@ const Collection = () => {
                     transition={"all 0.2s ease-in-out"}
                   />
                 </Flex>
-                <Flex direction="column" justify='center' bg="rgba(0, 0, 0, 0.5)" w="400px">
+                <Flex
+                  direction="column"
+                  justify="center"
+                  bg="rgba(0, 0, 0, 0.5)"
+                  w="400px"
+                >
                   <Flex
                     w="100%"
                     align={"center"}
@@ -123,8 +155,8 @@ const Collection = () => {
                     >
                       {monsterCurrentlyViewing.name}
                     </Text>
-                                        <Box
-                                        mt='10px'
+                    <Box
+                      mt="10px"
                       w="120px"
                       h="40px"
                       cursor="pointer"
@@ -146,8 +178,8 @@ const Collection = () => {
                     >
                       {monsterCurrentlyViewing.type}
                     </Text>
-                                        <Box
-                                         mt='10px'
+                    <Box
+                      mt="10px"
                       w="180px"
                       h="40px"
                       cursor="pointer"
