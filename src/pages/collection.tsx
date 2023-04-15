@@ -88,6 +88,7 @@ const Collection = () => {
             <Grid mt="15px" gap={4}>
               {collection.map((item) => (
                 <div
+                  onClick={() => setMonsterCurrentlyViewing(item)}
                   dangerouslySetInnerHTML={{
                     __html: updateSvgSize(item.image, 250, 250),
                   }}
@@ -128,13 +129,17 @@ const Collection = () => {
                   )}
                   bg="rgba(0, 0, 0, 0.8)"
                 >
-                  <Image
-                    src={monsterCurrentlyViewing.image}
-                    w="400px"
-                    h="400px"
-                    onDragStart={(event) => event.preventDefault()}
-                    transition={"all 0.2s ease-in-out"}
-                  />
+                  {
+                    <div
+                      dangerouslySetInnerHTML={{
+                        __html: updateSvgSize(
+                          monsterCurrentlyViewing.image,
+                          450,
+                          450
+                        ),
+                      }}
+                    />
+                  }
                 </Flex>
                 <Flex
                   direction="column"

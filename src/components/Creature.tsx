@@ -4,6 +4,7 @@ import { ReactSVG } from "react-svg";
 // import { ReactComponent as GrizzlarkSvg } from "../util/grizzlark.svg";
 import dynamic from "next/dynamic";
 import styles from "./Creature.module.css";
+import { updateSvgSize } from "../util/randomUtils";
 
 interface CreatureProps {
   id?: number;
@@ -31,5 +32,11 @@ export const Creature: React.FC<CreatureProps> = ({
 }) => {
   // const [svg, setSvg] = useState<string>("");
   console.log("flipX:", flipX);
-  return <div dangerouslySetInnerHTML={{ __html: imageURL }} />;
+  return (
+    <div
+      dangerouslySetInnerHTML={{
+        __html: updateSvgSize(imageURL, width, height, flipX),
+      }}
+    />
+  );
 };

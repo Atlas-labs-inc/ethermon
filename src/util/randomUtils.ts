@@ -40,7 +40,7 @@ export const base64Decode = (encodedString, isSvg = false) => {
 
 //   return updatedHeight;
 // };
-export const updateSvgSize = (svgString, width, height) => {
+export const updateSvgSize = (svgString, width, height, flipX = false) => {
   const viewBoxRegex = /(<svg[^>]+)(width="(\d+)")(.*?)(height="(\d+)")(.*?)>/;
   const match = svgString.match(viewBoxRegex);
 
@@ -51,10 +51,19 @@ export const updateSvgSize = (svgString, width, height) => {
     const newWidth = `width="${width}"`;
     const newHeight = `height="${height}"`;
 
-    const updatedSvg = svgString.replace(
+    let updatedSvg = svgString.replace(
       viewBoxRegex,
       `$1 ${viewBox} ${newWidth} $4 ${newHeight} $7>`
     );
+
+    if (flipX) {
+      const flipTransform = `<g transform="scale(-1, 1) translate(-${originalWidth}, 0)">`;
+      const closingTag = "</g>";
+      updatedSvg = updatedSvg
+        .replace(/(<svg[^>]*>)/, `$1${flipTransform}`)
+        .replace(/(<\/svg>)/, `${closingTag}$1`);
+    }
+
     return updatedSvg;
   } else {
     console.error("Invalid SVG string");
