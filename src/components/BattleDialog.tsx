@@ -293,7 +293,14 @@ export const BattleDialog: React.FC = () => {
                       playOnHoverSound();
                       setIsHovered(true);
                       setPrevBattleMsg(battleMsg);
-                      setBattleMsg(move.name.toUpperCase());
+                      setBattleMsg(
+                        move.name.toUpperCase() +
+                          "\n" +
+                          move?.damage +
+                          " damage\n" +
+                          move?.manaCost +
+                          " mana\n"
+                      );
                     }}
                     onMouseLeave={() => {
                       setIsHovered(false);
